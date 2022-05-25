@@ -1,0 +1,11 @@
+{
+  "name": "usermanagementapp",
+  "version": "1.0.0",
+  "description": "Aplicação web para gerenciamento de usuários.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dheniarley Cryz",
+  "license": "ISC"
+}
