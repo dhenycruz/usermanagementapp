@@ -38,8 +38,8 @@ class UserService {
     return this.model.update(id, body);
   }
 
-  async delete(id: number): Promise<void> {
-    await this.model.delete(id);
+  async delete(id: number): Promise<true> {
+    return this.model.delete(id);
   }
 }
 

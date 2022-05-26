@@ -28,8 +28,8 @@ class UserModel {
     return prisma.users.findMany();
   }
 
-  async delete(id: number): Promise<void> {
-    await prisma.users.delete({
+  async delete(id: number): Promise<true> {
+    return prisma.users.delete({
       where: {
         id_user: id,
       }
