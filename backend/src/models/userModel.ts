@@ -1,31 +1,30 @@
-import prisma from '../database/connection';
-import User from '../interfaces/userInterface';
+import { prisma }from '../database/connection';
+import { users } from '@prisma/client';
+import { User } from '../interfaces/userInterface';
 
 class UserModel {
-  async create(body: User) {
+  async create(body: User): Promise<users | unknown> {
     try {
-      const newUser = await prisma.users.create({
+      return await prisma.users.create({
         data: body,
       });
-      return newUser
     } catch (error) {
       return error;
     }
   }
 
-  async update(id: number, body: User) {
+  async update(id: number, body: User): Promise<users | unknown > {
     try {
-      const upUser = await prisma.users.update({
+      return await prisma.users.update({
         where: { id_user: id },
         data: body,
       });
-      return upUser;
     } catch (error) {
       return error;
     }
   }
 
-  async getUser(id: number) {
+  async getUser(id: number): Promise<users | unknown> {
     try {
       return prisma.users.findUnique({
         where: {
@@ -37,11 +36,25 @@ class UserModel {
     }
   }
 
-  async getUsers() {
+  async getUsers(): Promise<users[] | unknown> {
     try {
       return prisma.users.findMany();
     } catch (error) {
       return error;
     }
   }
+
+  async delete(id: number) {
+    try {
+      await prisma.users.delete({
+        where: {
+          id_user: id,
+        }
+      });
+    } catch (error) {
+      return Error;
+    }
+  }
 }
+
+export default UserModel;
