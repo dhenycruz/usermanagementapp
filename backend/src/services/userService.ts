@@ -1,6 +1,7 @@
 import { User, UserSchema } from '../interfaces/userInterface';
 import { ZodError } from 'zod';
 import UserModel from '../models/userModel';
+import { users } from '@prisma/client';
 
 interface ServiceError {
   error: ZodError;
@@ -11,6 +12,14 @@ class UserService {
 
   constructor() {
     this.model = new UserModel();  
+  }
+
+  async getUser(id: number): Promise<users> {
+    return this.model.getUser(id);
+  }
+
+  async getUsers(): Promise<users[]> {
+    return this.model.getUsers();
   }
 
   async create(body: User): Promise<User | ServiceError | null> {
