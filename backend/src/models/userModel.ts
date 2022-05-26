@@ -16,7 +16,7 @@ class UserModel {
     });
   }
 
-  async getUser(id: number): Promise<users> {
+  async getUser(id: number): Promise<users | null> {
     return prisma.users.findUnique({
       where: {
         id_user: id,
@@ -28,7 +28,7 @@ class UserModel {
     return prisma.users.findMany();
   }
 
-  async delete(id: number): Promise<true> {
+  async delete(id: number): Promise<users> {
     return prisma.users.delete({
       where: {
         id_user: id,

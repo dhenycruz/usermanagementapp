@@ -14,7 +14,7 @@ class UserService {
     this.model = new UserModel();  
   }
 
-  async getUser(id: number): Promise<users> {
+  async getUser(id: number): Promise<users | null> {
     return this.model.getUser(id);
   }
 
@@ -38,7 +38,7 @@ class UserService {
     return this.model.update(id, body);
   }
 
-  async delete(id: number): Promise<true> {
+  async delete(id: number): Promise<users | null> {
     return this.model.delete(id);
   }
 }
