@@ -1,79 +1,42 @@
 {
     "env": {
-        "browser": false,
-        "es2021": true,
-        "node": true
+      "es6": true,
+      "node": true
     },
     "extends": [
-        "plugin:@typescript-eslint/recommended",
-        "airbnb-base",
-        "plugin:editorconfig/noconflict",
-        "plugin:mocha/recommended",
-        "airbnb-typescript/base"
+      "airbnb-base",
+      "plugin:@typescript-eslint/recommended",
+      "prettier/@typescript-eslint",
+      "plugin:prettier/recommended"
     ],
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module",
-        "project": "./tsconfig.json"
+      "ecmaVersion": 2018,
+      "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint",
-        "sonarjs"
+      "@typescript-eslint",
+      "prettier"
     ],
     "rules": {
-        "no-underscore-dangle": "off",
-        "no-console": "off",
-        "camelcase": "warn",
-        "arrow-parens": [2, "always"],
-        "quotes": [2, "single"],
-        "implicit-arrow-linebreak": "off",
-        "consistent-return": "off",
-        "no-unused-vars": [
+      "prettier/prettier": "error",
+      "import/extensions": [
         "error",
+        "ignorePackages",
         {
-            "argsIgnorePattern": "^_",
-            "ignoreRestSiblings": true
+          "ts": "never"
         }
-        ],
-        "object-curly-newline": "off",
-        "max-params": ["error", 4],
-        "max-lines": ["error", 250],
-        "max-lines-per-function": [
-        "error",
-        {
-            "max": 20,
-            "skipBlankLines": true,
-            "skipComments": true
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "typescript": {
+  
         }
-        ],
-        "max-len": [
-        "error",
-        {
-            "code": 100
-        },
-        {
-            "ignoreComments": true
-        }
-        ],
-        "complexity": ["error", 5],
-        "import/no-extraneous-dependencies": ["off"],
-        "sonarjs/cognitive-complexity": ["error", 5],
-        "sonarjs/no-one-iteration-loop": ["error"],
-        "sonarjs/no-identical-expressions": ["error"],
-        "sonarjs/no-use-of-empty-return-value": ["error"],
-        "sonarjs/no-extra-arguments": ["error"],
-        "sonarjs/no-identical-conditions": ["error"],
-        "sonarjs/no-collapsible-if": ["error"],
-        "sonarjs/no-collection-size-mischeck": ["error"],
-        "sonarjs/no-duplicate-string": ["error"],
-        "sonarjs/no-duplicated-branches": ["error"],
-        "sonarjs/no-identical-functions": ["error"],
-        "sonarjs/no-redundant-boolean": ["error"],
-        "sonarjs/no-unused-collection": ["error"],
-        "sonarjs/no-useless-catch": ["error"],
-        "sonarjs/prefer-object-literal": ["error"],
-        "sonarjs/prefer-single-boolean-return": ["error"],
-        "sonarjs/no-inverted-boolean-check": ["error"]
+      }
     }
-}
+  }
