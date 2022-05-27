@@ -3,7 +3,7 @@ import { users } from '@prisma/client';
 import { User } from '../interfaces/userInterface';
 
 class UserModel {
-  async create(body: User): Promise<users> {
+  async create(body: User): Promise<users > {
     return prisma.users.create({
       data: body,
     });
@@ -25,10 +25,10 @@ class UserModel {
   }
 
   async getUsers(): Promise<users[]> {
-    return prisma.users.findMany();
+      return prisma.users.findMany();
   }
 
-  async delete(id: number): Promise<users> {
+  async delete(id: number): Promise <users | false> {
     return prisma.users.delete({
       where: {
         id_user: id,

@@ -18,7 +18,7 @@ class UserService {
     return this.model.getUser(id);
   }
 
-  async getUsers(): Promise<users[]> {
+  async getUsers() {
     return this.model.getUsers();
   }
 
@@ -30,7 +30,9 @@ class UserService {
     return this.model.create(body);
   }
 
-  async update(id: number, body: User): Promise<User | ServiceError | null> {
+  async update(id: number, body: User): Promise<User | ServiceError | false> {
+    const user = await this.model.getUser(id);
+    if (!user) return false;
     const parsed = UserSchema.safeParse(body);
     if (!parsed.success) {
        return { error: parsed.error }
@@ -38,9 +40,12 @@ class UserService {
     return this.model.update(id, body);
   }
 
-  async delete(id: number): Promise<users | null> {
-    return this.model.delete(id);
+  async delete(id: number): Promise<users | false>  {
+    const user = await this.model.getUser(id);
+    return user
+      ? this.model.delete(id)
+      : false;
   }
 }
 
-export default UserService;
+export default new UserService();
