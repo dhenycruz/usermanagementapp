@@ -1,0 +1,44 @@
+[
+  {
+    "id_user": 1,
+    "name": "Juliana",
+    "email": "ju@email.com",
+    "password": "senhadaju"
+  },
+  {
+    "id_user": 2,
+    "name": "Pedro",
+    "email": "pedroa@pedro.com",
+    "password": "senhadopedro"
+  },
+  {
+    "id_user": 3,
+    "name": "Maria",
+    "email": "maria@email.com",
+    "password": "senhadamaria"
+  },
+  {
+    "id_user": 4,
+    "name": "João",
+    "email": "joao@email.com",
+    "password": "senhadojoao"
+  },
+  {
+    "id_user": 5,
+    "name": "Eduardo",
+    "email": "eduardo@email.com",
+    "password": "senhadoeduardo"
+  },
+  {
+    "id_user": 6,
+    "name": "Mônica",
+    "email": "monica@monica.com",
+    "password": "senhadamonica"
+  },
+  {
+    "id_user": 7,
+    "name": "Dheniarley",
+    "email": "dheniarley@email.com",
+    "password": "minhasenha"
+  }
+]
