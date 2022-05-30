@@ -46,6 +46,12 @@ class UserService {
       ? this.model.delete(id)
       : false;
   }
+
+  async verifyEmailExists(email: string): Promise<true | false> {
+    const user = await this.model.getUserByEmail(email);
+    if (!user) return false;
+    return true;
+  }
 }
 
 export default new UserService();
