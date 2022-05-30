@@ -53,7 +53,7 @@ describe('Testando a camada model: class UserModel - método getUsers:', () => {
 
 describe('Testando a camada model: class UserModel - método getUser', () => {
   prisma.users.findUnique = jest.fn();
-  test('Se houver algum usuário que corresponda ao id passo, ele será retornado', async () => {
+  test('Se houver algum usuário que corresponda ao id passodo, ele será retornado', async () => {
     const id = 1;
     const user = {
         "id_user": 1,
@@ -67,13 +67,39 @@ describe('Testando a camada model: class UserModel - método getUser', () => {
     await expect(model.getUser(id)).resolves.toEqual(user);
   });
 
-  test('Se não houver nehum usuário que corresponda ao id passo, o retorn será null', async () => {
+  test('Se não houver nehum usuário que corresponda ao id passodo, o retorn será null', async () => {
     const id = 1;
     const user = null;
     
     jest.spyOn(prisma.users, 'findUnique').mockResolvedValue(user);
 
     await expect(model.getUser(id)).resolves.toEqual(user);
+  });
+});
+
+describe('Testando a camada model: class UserModel - método getUserByEmail', () => {
+  prisma.users.findUnique = jest.fn();
+  test('Se houver algum usuário que corresponda ao email passodo, ele será retornado', async () => {
+    const email = 'ju@email.com';
+    const user = {
+        "id_user": 1,
+        "name": "Juliana",
+        "email": "ju@email.com",
+        "password": "senhadaju"
+    };
+    
+    jest.spyOn(prisma.users, 'findUnique').mockResolvedValue(user);
+
+    await expect(model.getUserByEmail(email)).resolves.toEqual(user);
+  });
+
+  test('Se não houver nehum usuário que corresponda ao email passodo, o retorn será null', async () => {
+    const email = 'dheny@email.com';
+    const user = null;
+    
+    jest.spyOn(prisma.users, 'findUnique').mockResolvedValue(user);
+
+    await expect(model.getUserByEmail(email)).resolves.toEqual(user);
   });
 });
 

@@ -31,6 +31,14 @@ class UserModel {
     return prisma.users.findMany();
   }
 
+  async getUserByEmail(email: string): Promise<User | null> {
+    return prisma.users.findUnique({
+      where: {
+        email,
+      }
+    })
+  }
+
   async delete(id: number): Promise <users | false> {
     return prisma.users.delete({
       where: {

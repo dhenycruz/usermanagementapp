@@ -6,7 +6,7 @@
   "scripts": {
     "test-jest": "jest",
     "test-jest:coverage": "jest --config='./jest.unit.config.js' --forceExit --detectOpenHandles",
-    "test": "mocha -r ts-node/register __tests__/unit/**/*.test.ts",
+    "test": "mocha -r ts-node/register __tests__/unit/test-unit-chai/**/*.test.ts",
     "test-coverage": "nyc npm run test"
   },
   "author": "Dheniarley Cryz",

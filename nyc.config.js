@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ['./__tests__'],
+  roots: ['./__tests__/unit/test-unit-chai'],
   testRegex: '.*.test.(js|ts|tsx)?$',
   globals: {
     'ts-jest': {
