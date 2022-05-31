@@ -1,35 +1,14 @@
 module.exports = {
-  roots: ['./__tests__/unit/test-unit-chai'],
-  testRegex: '.*.test.(js|ts|tsx)?$',
-  globals: {
-    'ts-jest': {
-      tsConfig: 'tsconfig.json',
-    },
-  },
-  moduleFileExtensions: ['ts', 'js'],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-  },
-  testEnvironment: 'node',
-  collectCoverage: true,
-  collectCoverageFrom: [
-    'backend/src/**/*.ts'
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "include": [
+    "backend/src/services",
+    "backend/src/controllers"
   ],
-  coverageDirectory: "./coverage",
-  coveragePathIgnorePatterns: [
-    "<rootDir>/node_modules"
-  ],
-  coverageReporters: [
-    "json",
-    "lcov",
-    "text"
-  ],
-  coverageThreshold: {
-    "global": {
-      "branches": 100,
-      "functions": 100,
-      "lines": 100,
-      "statements": 100
-    }
-  },
-};
+  "reporter": [
+    "text",
+    "text-summary",
+    "json-summary",
+    "html",
+    'lcov'
+  ]
+}

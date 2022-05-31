@@ -41,7 +41,7 @@ class UserController {
       }
 
       if('error' in newUser) {
-        return res.status(400).json({ error: newUser.error.issues[0].message });
+        return res.status(400).json({ error: newUser.error });
       }
       res.status(201).json(newUser);
     } catch (error) {
@@ -59,7 +59,7 @@ class UserController {
       }
 
       if ('error' in updateUser) {
-        return res.status(400).json({ error: updateUser.error.issues[0].message });
+        return res.status(400).json({ error: updateUser.error });
       }
 
       res.status(201).json(updateUser);

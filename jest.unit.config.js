@@ -1,5 +1,5 @@
  module.exports = {
-  roots: ['./__tests__'],
+  roots: ['./__tests__/unit/test-unit-prisma'],
   testRegex: '.*.test.(js|ts|tsx)?$',
   globals: {
     'ts-jest': {
@@ -15,7 +15,7 @@
   collectCoverageFrom: [
     'backend/src/**/*.ts'
   ],
-  coverageDirectory: "./coverage",
+  coverageDirectory: "__tests__/unit/test-unit-chai/coverage",
   coveragePathIgnorePatterns: [
     "<rootDir>/node_modules"
   ],

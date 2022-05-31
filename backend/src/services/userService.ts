@@ -1,10 +1,9 @@
 import { User, UserSchema } from '../interfaces/userInterface';
-import { ZodError } from 'zod';
 import UserModel from '../models/userModel';
 import { users } from '@prisma/client';
 
 interface ServiceError {
-  error: ZodError;
+  error: string;
 }
 
 class UserService {
@@ -22,20 +21,20 @@ class UserService {
     return this.model.getUsers();
   }
 
-  async create(body: User): Promise<User | ServiceError | null> {
+  async create(body: User): Promise<users | ServiceError | null> {
     const parsed = UserSchema.safeParse(body);
     if (!parsed.success) {
-      return { error: parsed.error };
+      return { error: parsed.error.issues[0].message };
     }
     return this.model.create(body);
   }
 
-  async update(id: number, body: User): Promise<User | ServiceError | false> {
+  async update(id: number, body: User): Promise<users | ServiceError | false> {
     const user = await this.model.getUser(id);
     if (!user) return false;
     const parsed = UserSchema.safeParse(body);
     if (!parsed.success) {
-       return { error: parsed.error }
+       return { error: parsed.error.issues[0].message }
     }
     return this.model.update(id, body);
   }
