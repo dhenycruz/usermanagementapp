@@ -27,7 +27,6 @@ class UserController {
       const users = await service.getUsers();
       return res.status(200).json(users);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
@@ -39,7 +38,6 @@ class UserController {
       if (!newUser) {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-
       if('error' in newUser) {
         return res.status(400).json({ error: newUser.error });
       }
@@ -79,14 +77,26 @@ class UserController {
     }
   }
 
-  async verifyEmailExists( req: Request, res: Response, next: NextFunction) {
+  async verifyEmailExists(req: Request, res: Response, next: NextFunction) {
     const { body } = req;
     try {
       const user = await service.verifyEmailExists(body.email);
-      if (!user) return res.status(401).json({ error: 'Email already registered'})
+      if (user) return res.status(401).json({ error: 'Email already registered'})
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });
     } 
+    next();
+  }
+
+  async validateEmail(req: Request, res: Response, next: NextFunction) {
+    const { body } = req;
+
+    if(!body.email) return res.status(400).json({ error: 'Email is required.' });
+
+    const result = await service.validateEmail(body.email);
+    
+    if(!result) return res.status(400).json({ error: 'Email invalid format.' });
+    
     next();
   }
 }

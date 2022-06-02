@@ -51,6 +51,12 @@ class UserService {
     if (!user) return false;
     return true;
   }
+
+  // Font: https://www.horadecodar.com.br/2020/09/13/como-validar-email-com-javascript/
+  async validateEmail(email: string): Promise<true | false> {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
 }
 
 export default new UserService();

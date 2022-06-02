@@ -10,3 +10,5 @@ userRouter.addRoute(userController);
 App.addRouter(userRouter.router);
 
 App.startServer();
+
+export default App;
