@@ -2,12 +2,13 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import UserModel from '../../../../backend/src/models/userModel';
 import userService from '../../../../backend/src/services/userService';
-import { User } from '../../../../backend/src/interfaces/userInterface';
 
 const users = require('../../../data-user.json');
 
-interface UserID extends User{
+interface User {
   id_user: number,
+  name: string,
+  email: string
 }
 
 interface ServiceError {
@@ -30,7 +31,7 @@ describe('Testando a camada Service', () => {
     });
 
     describe('Se não houver usuários salvos no banco', () => {
-      const usersReturn: UserID[] = [];
+      const usersReturn: User[] = [];
       before(() => {
         sinon.stub(UserModel.prototype, 'getUsers').resolves(usersReturn);
       });
@@ -39,6 +40,7 @@ describe('Testando a camada Service', () => {
 
       it('Retorna um array vazio', async () => {
         const result = await userService.getUsers();
+        console.log(result);
         expect(result).to.be.a('array');
         expect(result.length).to.be.equal(0);
       });
@@ -117,15 +119,21 @@ describe('Testando a camada Service', () => {
         password: 'minhasenha',
       };
 
+      const user = {
+        id_user: 1,
+        name: 'Juliano Alves',
+        email: 'juliano@email.com',
+      }
+
       before(() => {
-        sinon.stub(UserModel.prototype, 'create').resolves({ id_user: 1, ...userBody });
+        sinon.stub(UserModel.prototype, 'create').resolves(user);
       });
 
       after(() => { sinon.restore(); });
 
       it('Retorna um objeto com dados do usuário e seu novo id', async () => {
         const result = await userService.create(userBody);
-        expect(result).to.be.eql({ id_user: 1, ...userBody });
+        expect(result).to.be.eql(user);
       });
     });
 
@@ -153,14 +161,15 @@ describe('Testando a camada Service', () => {
         password: '123senha',
       };
 
+      const user = {
+        id_user: 6,
+        name: 'Dheniarley Cruz',
+        email: 'dheny@email.com'
+      }
+
       before(() => {
-        sinon.stub(UserModel.prototype, 'getUser').resolves({ id_user: id,
-          ...{
-            name: 'Dheniarley Cruz',
-            email: 'dheniarley@gmail.com',
-            password: 'minhasenha',
-          } });
-        sinon.stub(UserModel.prototype, 'update').resolves({ id_user: id, ...userBody });
+        sinon.stub(UserModel.prototype, 'getUser').resolves(user);
+        sinon.stub(UserModel.prototype, 'update').resolves(user);
       });
 
       after(() => { sinon.restore(); });
@@ -168,6 +177,7 @@ describe('Testando a camada Service', () => {
       it('Retorna o novo objeto do usuário com seus dados atualizados', async () => {
         const result = await userService.update(id, userBody);
         expect(result).to.be.a('object');
+        expect(result).to.be.eql(user);
       });
     });
 
@@ -187,7 +197,7 @@ describe('Testando a camada Service', () => {
 
       it('Se não encontrar o usuário deverá retorna false', async () => {
         const result = await userService.update(id, userBody);
-        expect(result).to.be.false;
+        expect(result).to.be.null;
       });
     });
 

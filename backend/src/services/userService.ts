@@ -24,7 +24,7 @@ class UserService {
     return this.model.getUser(id);
   }
 
-  async getUsers(): Promise<UserReturn[] | null> {
+  async getUsers(): Promise<UserReturn[]> {
     return this.model.getUsers();
   }
 
@@ -40,7 +40,7 @@ class UserService {
     return this.model.create(body);
   }
 
-  async update(id: number, body: User): Promise<User | ServiceError | null> {
+  async update(id: number, body: User): Promise<UserReturn | ServiceError | null> {
     const user = await this.model.getUser(id);
     if (!user) return null;
     const parsed = UserSchema.safeParse(body);

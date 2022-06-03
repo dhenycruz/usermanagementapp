@@ -8,14 +8,23 @@ interface UserReturn {
   email: string,
 }
 
+interface UserID extends User {
+  id_user: number;
+}
+
 class UserModel {
   async create(body: User): Promise <UserReturn | null> {
     return prisma.users.create({
       data: body,
+      select: {
+        id_user: true,
+        email: true,
+        name: true,
+      },
     });
   }
 
-  async update(id: number, body: User): Promise<User | null> {
+  async update(id: number, body: User): Promise<UserReturn | null> {
     return prisma.users.update({
       where: { id_user: id },
       data: body,
