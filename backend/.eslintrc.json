@@ -1,42 +1,72 @@
 {
     "env": {
-      "es6": true,
-      "node": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
-      "airbnb-base",
-      "plugin:@typescript-eslint/recommended",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
+        "airbnb-base"
     ],
-    "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
-    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module"
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
     "plugins": [
-      "@typescript-eslint",
-      "prettier"
+        "@typescript-eslint"
     ],
     "rules": {
-      "prettier/prettier": "error",
-      "import/extensions": [
+        "class-methods-use-this": "off",    // Não exige o uso do this nos métodos da classe
+        "no-underscore-dangle": 0, // Permiteo uso de underline
+        "no-console": "off", // Permite o uso do console.log
+        "camelcase": "warn", // Aplica a convenção de nomenclatura camelcase
+        "arrow-parens": [2, "always"], // exigir parênteses em torno dos argumentos da arrow functions
+        "quotes": [2, "single"], // Exige o uso de aspas simples
+        "implicit-arrow-linebreak": "off", // Não exige o uso de parenteses ou chaves no corpo da arrow funciton
+        "consistent-return": "off", // Requerem instruções `return` para especificar valores sempre ou nunca
+        "no-unused-vars": [ // não permitir variáveis ​​não utilizadas, a não ser que utilize underline antes do nome do parametro
         "error",
-        "ignorePackages",
         {
-          "ts": "never"
+            "argsIgnorePattern": "^_",
+            "ignoreRestSiblings": true
         }
-      ]
+        ],
+        "import/extensions": [ // Para não precisar coloar a extensão do arquivo, a extensão é reconhecida automaticamente
+            "error",
+            "ignorePackages",
+            {
+              "js": "never",
+              "jsx": "never",
+              "ts": "never",
+              "tsx": "never"
+            }
+         ],
+        "object-curly-newline": "off", // impor quebras de linha consistentes após a abertura e antes de fechar chaves
+        "max-params": ["error", 4], // número máximo de parametros por funcão
+        "max-lines": ["error", 250], // numéro máximo por arquivo
+        "max-lines-per-function": [ //  número máximo de linhas de código em uma função
+        "error",
+        {
+            "max": 20,
+            "skipBlankLines": true,
+            "skipComments": true
+        }
+        ],
+        "max-len": [ // impor um comprimento máximo de linha
+        "error",
+        {
+            "code": 100
+        },
+        {
+            "ignoreComments": true
+        }
+        ],
+        "complexity": ["error", 5] // número máximo de complexidade (ifs, returns, switch e etc);
     },
-    "settings": {
-      "import/resolver": {
-        "typescript": {
-  
+    "settings": { // resolvendo problendo com import/resolver
+        "import/resolver": {
+        "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"]
         }
-      }
+        }
     }
-  }
+}

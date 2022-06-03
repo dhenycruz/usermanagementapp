@@ -2,13 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import service from '../services/userService';
 
 class UserController {
-  private _route:  string;
+  private _route: string;
 
   constructor() {
     this._route = '/users';
   }
 
-  get route() { return this._route }
+  get route() { return this._route; }
 
   async getUser(req: Request, res: Response) {
     const { id } = req.params;
@@ -38,7 +38,7 @@ class UserController {
       if (!newUser) {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-      if('error' in newUser) {
+      if ('error' in newUser) {
         return res.status(400).json({ error: newUser.error });
       }
       res.status(201).json(newUser);
@@ -81,22 +81,28 @@ class UserController {
     const { body } = req;
     try {
       const user = await service.verifyEmailExists(body.email);
-      if (user) return res.status(401).json({ error: 'Email already registered'})
+      if (user) {
+        return res.status(401).json({ error: 'Email already registered' });
+      }
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });
-    } 
+    }
     next();
   }
 
   async validateEmail(req: Request, res: Response, next: NextFunction) {
     const { body } = req;
 
-    if(!body.email) return res.status(400).json({ error: 'Email is required.' });
+    if (!body.email) {
+      return res.status(400).json({ error: 'Email is required.' });
+    }
 
     const result = await service.validateEmail(body.email);
-    
-    if(!result) return res.status(400).json({ error: 'Email invalid format.' });
-    
+
+    if (!result) {
+      return res.status(400).json({ error: 'Email invalid format.' });
+    }
+
     next();
   }
 }

@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
-import UserModel from '../../../../backend/src/models/userModel';
 import chai from 'chai';
 import chaiHttp = require('chai-http');
-import App from '../../../../backend/src/';
+import UserModel from '../../../../backend/src/models/userModel';
+import App from '../../../../backend/src';
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -17,9 +17,9 @@ describe('Testando a camada Controller', () => {
         id_user: 1,
         name: 'Dheniarley Cruz',
         email: 'dheniarley@gmail.com',
-        password: 'minhasenha'
-      }
-      
+        password: 'minhasenha',
+      };
+
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
       });
@@ -50,42 +50,42 @@ describe('Testando a camada Controller', () => {
           .get(`/users/${id}`)
           .then((res) => {
             expect(res.status).to.be.equal(404);
-            expect(res.body).to.be.eql({ error: 'User not found.'});
+            expect(res.body).to.be.eql({ error: 'User not found.' });
           });
       });
     });
 
     describe('Quando ocorre algum erro no sevidor', () => {
       const id = 2;
-      const error = new Error('Internal Server Error')
-      before(() => { sinon.stub(UserModel.prototype, 'getUser').throws(error) });
+      const error = new Error('Internal Server Error');
+      before(() => { sinon.stub(UserModel.prototype, 'getUser').throws(error); });
       after(() => { sinon.restore(); });
-      
+
       it('Retorna status 500 e o objeto com message do erro', async () => {
         await chai.request(App.getApp())
-        .get(`/users/${id}`)
-        .then((res) => {
-          expect(res.status).to.be.equal(500);
-        });
+          .get(`/users/${id}`)
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+          });
       });
     });
   });
-  
+
   describe('Testando o endpoint get /users', () => {
     describe('Quando existe usuários salvos no banco de dados', () => {
-      before(() => { 
+      before(() => {
         sinon.stub(UserModel.prototype, 'getUsers').resolves(users);
       });
 
       after(() => { sinon.restore(); });
-      
+
       it('Retorna um array de objetos com dados dos usuários cadastrados', async () => {
         await chai.request(App.getApp())
-        .get('/users')
-        .then((res) => {
-          expect(res.status).to.be.equal(200);
-          expect(res.body).to.be.eql(users);
-        });
+          .get('/users')
+          .then((res) => {
+            expect(res.status).to.be.equal(200);
+            expect(res.body).to.be.eql(users);
+          });
       });
     });
 
@@ -93,31 +93,31 @@ describe('Testando a camada Controller', () => {
       before(() => {
         sinon.stub(UserModel.prototype, 'getUsers').resolves([]);
       });
-  
+
       after(() => { sinon.restore(); });
-  
+
       it('Retorna um array vazio', async () => {
         await chai.request(App.getApp())
-        .get('/users')
-        .then((res) => {
-          expect(res.status).to.be.equal(200);
-          expect(res.body).to.be.a('array');
-          expect(res.body.length).to.be.equal(0);
-        });
+          .get('/users')
+          .then((res) => {
+            expect(res.status).to.be.equal(200);
+            expect(res.body).to.be.a('array');
+            expect(res.body.length).to.be.equal(0);
+          });
       });
     });
 
     describe('Quando ocorre algum erro no sevidor', () => {
-      const error = new Error('Internal Server Error')
-      before(() => { sinon.stub(UserModel.prototype, 'getUsers').throws(error) });
+      const error = new Error('Internal Server Error');
+      before(() => { sinon.stub(UserModel.prototype, 'getUsers').throws(error); });
       after(() => { sinon.restore(); });
-      
+
       it('Retorna status 500 e o objeto com message do erro', async () => {
         await chai.request(App.getApp())
-        .get('/users/')
-        .then((res) => {
-          expect(res.status).to.be.equal(500);
-        });
+          .get('/users/')
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+          });
       });
     });
   });
@@ -129,7 +129,7 @@ describe('Testando a camada Controller', () => {
         it('retorna status 400 e um objeto contendo a messagem de erro', async () => {
           const userBody = {
             name: 'Dheniarley Cruz',
-            password: 'minhasenha'
+            password: 'minhasenha',
           };
 
           await chai.request(App.getApp())
@@ -147,16 +147,16 @@ describe('Testando a camada Controller', () => {
           const userBody = {
             name: 'Dheniarley',
             email: 'dheniarleyemail.com',
-            password: 'minhasenha'
-          }
-  
+            password: 'minhasenha',
+          };
+
           await chai.request(App.getApp())
             .post('/users')
             .send(userBody)
             .then((res) => {
               expect(res.status).to.be.equal(400);
               expect(res.body).to.be.eql({ error: 'Email invalid format.' });
-            })
+            });
         });
       });
 
@@ -164,19 +164,19 @@ describe('Testando a camada Controller', () => {
         const userBody = {
           name: 'Dheniarley Cruz',
           email: 'dheniarley@gmail.com',
-          password: 'minhasenha'
-        }
+          password: 'minhasenha',
+        };
 
         const user = {
           id_user: 3,
           name: 'Dheniarley Cruz',
           email: 'dheniarley@gmail.com',
-          password: 'minhasenha'
+          password: 'minhasenha',
         };
 
         before(() => { sinon.stub(UserModel.prototype, 'getUserByEmail').resolves(user); });
         after(() => { sinon.restore(); });
-        
+
         it('Retorna o status 401 e objeto com messagem de erro no body de retorno', async () => {
           await chai.request(App.getApp())
             .post('/users')
@@ -189,22 +189,22 @@ describe('Testando a camada Controller', () => {
       });
 
       describe('Quando ocorre algum erro no sevidor', () => {
-        const error = new Error('Internal Server Error')
-        before(() => { 
+        const error = new Error('Internal Server Error');
+        before(() => {
           sinon.stub(UserModel.prototype, 'getUserByEmail').throws(error);
         });
         after(() => { sinon.restore(); });
-  
+
         const userBody = {
-          name:'Matheus Mendes',
-          email: "matheus@email.com",
-          password: 'matheussenha'
+          name: 'Matheus Mendes',
+          email: 'matheus@email.com',
+          password: 'matheussenha',
         };
-        
+
         it('Ao buscar usuário pelo email e ocorre erro servidor, retorna status 500 e objeto com a message de error', async () => {
           const response = await chai.request(App.getApp())
-          .post('/users/')
-          .send(userBody);
+            .post('/users/')
+            .send(userBody);
 
           expect(response.status).to.be.equal(500);
         });
@@ -217,9 +217,9 @@ describe('Testando a camada Controller', () => {
 
       it('Se o nome não for passado, retorna um objeto especificando esse erro com status 400:', async () => {
         const userBody = {
-          email: "dheniarley@email.com",
-          password: 'minhasenha'
-        }
+          email: 'dheniarley@email.com',
+          password: 'minhasenha',
+        };
 
         await chai.request(App.getApp())
           .post('/users')
@@ -233,24 +233,8 @@ describe('Testando a camada Controller', () => {
       it('Se o nome passado não for uma string, retorna um objeto especificando esse erro com status 400', async () => {
         const userBody = {
           name: 2022,
-          email: "dheniarley@email.com",
-          password: 'minhasenha'
-        }
-
-        await chai.request(App.getApp())
-          .post('/users')
-          .send(userBody)
-          .then((res) => {
-            expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'User name user must be a string.' });
-          })
-      });
-
-      it('Se o nome passado tiver menos de 5 string, retorna um objeto especificando esse erro com status 400', async () => {
-        const userBody = {
-          name: 'Dhe',
           email: 'dheniarley@email.com',
-          pssword: 'minhasenha'
+          password: 'minhasenha',
         };
 
         await chai.request(App.getApp())
@@ -258,8 +242,24 @@ describe('Testando a camada Controller', () => {
           .send(userBody)
           .then((res) => {
             expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'User name must be 5 or more characters.'})
-          })
+            expect(res.body).to.be.eql({ error: 'User name user must be a string.' });
+          });
+      });
+
+      it('Se o nome passado tiver menos de 5 string, retorna um objeto especificando esse erro com status 400', async () => {
+        const userBody = {
+          name: 'Dhe',
+          email: 'dheniarley@email.com',
+          pssword: 'minhasenha',
+        };
+
+        await chai.request(App.getApp())
+          .post('/users')
+          .send(userBody)
+          .then((res) => {
+            expect(res.status).to.be.equal(400);
+            expect(res.body).to.be.eql({ error: 'User name must be 5 or more characters.' });
+          });
       });
     });
 
@@ -269,7 +269,7 @@ describe('Testando a camada Controller', () => {
       it('Se o password não for passado, retorna um objeto especificando esse erro com status 400', async () => {
         const userBody = {
           name: 'Dheniarley',
-          email: 'dheniarley@email.com'
+          email: 'dheniarley@email.com',
         };
 
         await chai.request(App.getApp())
@@ -285,7 +285,7 @@ describe('Testando a camada Controller', () => {
         const userBody = {
           name: 'Dheniarley',
           email: 'dheniarley@email.com',
-          password: 123
+          password: 123,
         };
 
         await chai.request(App.getApp())
@@ -293,15 +293,15 @@ describe('Testando a camada Controller', () => {
           .send(userBody)
           .then((res) => {
             expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password must be a string'});
-          })
+            expect(res.body).to.be.eql({ error: 'Password must be a string' });
+          });
       });
 
       it('Se o password passado for menor que 6 caracteres, retorna um objeto especificando esse erro com status 400', async () => {
         const userBody = {
           name: 'Dheniarley',
           email: 'dheniarley@email.com',
-          password: '123'
+          password: '123',
         };
 
         await chai.request(App.getApp())
@@ -309,20 +309,20 @@ describe('Testando a camada Controller', () => {
           .send(userBody)
           .then((res) => {
             expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password must be 6 or more characters.'})
+            expect(res.body).to.be.eql({ error: 'Password must be 6 or more characters.' });
           });
       });
     });
 
     describe('Caso esteja tudo ok com o body a ser passado, será criado um novo usuário', () => {
       const userBody = {
-        name:'Pedro Alvez',
-        email: "pedro@email.com",
-        password: 'minhasenha'
+        name: 'Pedro Alvez',
+        email: 'pedro@email.com',
+        password: 'minhasenha',
       };
       const idNewUser = 1;
 
-      before(() => { 
+      before(() => {
         sinon.stub(UserModel.prototype, 'getUserByEmail').resolves(null);
         sinon.stub(UserModel.prototype, 'create').resolves({ id_user: idNewUser, ...userBody });
       });
@@ -340,50 +340,50 @@ describe('Testando a camada Controller', () => {
     });
 
     describe('Quando ocorre um erro desconhecido ao criar o usuário, retornando null no método create na camada model', () => {
-      before(() => { 
+      before(() => {
         sinon.stub(UserModel.prototype, 'getUserByEmail').resolves(null);
-        sinon.stub(UserModel.prototype, 'create').resolves(undefined) 
+        sinon.stub(UserModel.prototype, 'create').resolves(undefined);
       });
       after(() => { sinon.restore(); });
 
       const userBody = {
-        name:'Amanda Oliveira',
-        email: "amanda@email.com",
-        password: 'amandasenha'
+        name: 'Amanda Oliveira',
+        email: 'amanda@email.com',
+        password: 'amandasenha',
       };
-      
+
       it('Retorna status 500 e o objeto com message do erro', async () => {
         await chai.request(App.getApp())
-        .post('/users/')
-        .send(userBody)
-        .then((res) => {
-          expect(res.status).to.be.equal(500);
-          expect(res.body).to.be.eql({ error: 'Internal Server Error' });
-        });
+          .post('/users/')
+          .send(userBody)
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+            expect(res.body).to.be.eql({ error: 'Internal Server Error' });
+          });
       });
     });
-  
+
     describe('Quando ocorre algum erro no sevidor', () => {
-      const error = new Error('Internal Server Error')
-      before(() => { 
+      const error = new Error('Internal Server Error');
+      before(() => {
         sinon.stub(UserModel.prototype, 'getUserByEmail').resolves(null);
-        sinon.stub(UserModel.prototype, 'create').throws(error) 
+        sinon.stub(UserModel.prototype, 'create').throws(error);
       });
       after(() => { sinon.restore(); });
 
       const userBody = {
-        name:'Beatriz Oliveira',
-        email: "beatriz@email.com",
-        password: 'beatrizsenha'
+        name: 'Beatriz Oliveira',
+        email: 'beatriz@email.com',
+        password: 'beatrizsenha',
       };
-      
+
       it('Se houver algum erro no sevidor, retorna status 500 e objeto com a message de error', async () => {
         await chai.request(App.getApp())
-        .post('/users/')
-        .send(userBody)
-        .then((res) => {
-          expect(res.status).to.be.equal(500);
-        });
+          .post('/users/')
+          .send(userBody)
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+          });
       });
     });
   });
@@ -403,7 +403,7 @@ describe('Testando a camada Controller', () => {
           .then((res) => {
             expect(res.status).to.be.equal(404);
             expect(res.body).to.be.eql({ error: 'User not found.' });
-          })
+          });
       });
     });
 
@@ -413,9 +413,9 @@ describe('Testando a camada Controller', () => {
         id_user: 1,
         name: 'Gustavo Alves',
         email: 'gustavo@email.com',
-        password: 'senhaguga'
-      }
-      
+        password: 'senhaguga',
+      };
+
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
         sinon.stub(UserModel.prototype, 'delete').resolves(user);
@@ -439,20 +439,20 @@ describe('Testando a camada Controller', () => {
         id_user: 1,
         name: 'Gustavo Alves',
         email: 'gustavo@email.com',
-        password: 'senhaguga'
+        password: 'senhaguga',
       };
-      before(() => { 
+      before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
-        sinon.stub(UserModel.prototype, 'delete').throws(error) 
+        sinon.stub(UserModel.prototype, 'delete').throws(error);
       });
       after(() => { sinon.restore(); });
 
       it('Se houver algum erro no sevidor, retorna status 500 e objeto com a message de error', async () => {
         await chai.request(App.getApp())
-        .delete(`/users/${id}`)
-        .then((res) => {
-          expect(res.status).to.be.equal(500);
-        });
+          .delete(`/users/${id}`)
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+          });
       });
     });
   });
@@ -464,7 +464,7 @@ describe('Testando a camada Controller', () => {
           const id = 1;
           const updateBody = {
             name: 'Dheniarley Cruz',
-            password: 'minhasenha'
+            password: 'minhasenha',
           };
 
           await chai.request(App.getApp())
@@ -477,20 +477,20 @@ describe('Testando a camada Controller', () => {
         });
       });
       describe('Passando um email inválido', () => {
-        const id =  1;
+        const id = 1;
         const updateBody = {
           name: 'Francisca Pereira',
           email: 'franemail.com',
-          password: 'fransenha'
-        }
-        
+          password: 'fransenha',
+        };
+
         it('Retorna 400 e um objeto contém a mensagem de erro', async () => {
           await chai.request(App.getApp())
             .put(`/users/${id}`)
             .send(updateBody)
             .then((res) => {
               expect(res.status).to.be.equal(400);
-              expect(res.body).to.be.eql({ error: 'Email invalid format.' })
+              expect(res.body).to.be.eql({ error: 'Email invalid format.' });
             });
         });
       });
@@ -501,10 +501,10 @@ describe('Testando a camada Controller', () => {
       const updateBody = {
         name: 'Francisco Silva',
         email: 'francisco.silva@email.com',
-        password: 'franciscosenha'
+        password: 'franciscosenha',
       };
-      before(() => { sinon.stub(UserModel.prototype, 'getUser').resolves(null) });
-      after(() => { sinon.restore()})
+      before(() => { sinon.stub(UserModel.prototype, 'getUser').resolves(null); });
+      after(() => { sinon.restore(); });
 
       it('Retorna 404 e um objeto descrevendo o erro', async () => {
         await chai.request(App.getApp())
@@ -518,22 +518,22 @@ describe('Testando a camada Controller', () => {
     });
 
     describe('Validando o nome passado no body do endpoint', () => {
-      const id =  1;
+      const id = 1;
       const user = {
         id_user: id,
         name: 'Fracisca Pereira',
         email: 'francisca@email.com',
-        password: '123141'
-      }
+        password: '123141',
+      };
 
       before(() => { sinon.stub(UserModel.prototype, 'getUser').resolves(user); });
       after(() => { sinon.restore(); });
 
       it('Se o nome não for passado, retorna um objeto especificando esse erro com status 400:', async () => {
         const updateBody = {
-          email: "francisca@email.com",
-          password: 'fransenha'
-        }
+          email: 'francisca@email.com',
+          password: 'fransenha',
+        };
 
         await chai.request(App.getApp())
           .put(`/users/${id}`)
@@ -548,23 +548,7 @@ describe('Testando a camada Controller', () => {
         const updateBody = {
           name: 2022,
           email: 'francisca@email.com',
-          password: 'fransenha'
-        }
-
-        await chai.request(App.getApp())
-          .put(`/users/${id}`)
-          .send(updateBody)
-          .then((res) => {
-            expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'User name user must be a string.' });
-          })
-      });
-
-      it('Se o nome passado tiver menos de 5 string, retorna um objeto especificando esse erro com status 400', async () => {
-        const updateBody = {
-          name: 'Fra',
-          email: 'francisca@email.com',
-          pssword: 'fransenha'
+          password: 'fransenha',
         };
 
         await chai.request(App.getApp())
@@ -572,19 +556,35 @@ describe('Testando a camada Controller', () => {
           .send(updateBody)
           .then((res) => {
             expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'User name must be 5 or more characters.'})
-          })
+            expect(res.body).to.be.eql({ error: 'User name user must be a string.' });
+          });
+      });
+
+      it('Se o nome passado tiver menos de 5 string, retorna um objeto especificando esse erro com status 400', async () => {
+        const updateBody = {
+          name: 'Fra',
+          email: 'francisca@email.com',
+          pssword: 'fransenha',
+        };
+
+        await chai.request(App.getApp())
+          .put(`/users/${id}`)
+          .send(updateBody)
+          .then((res) => {
+            expect(res.status).to.be.equal(400);
+            expect(res.body).to.be.eql({ error: 'User name must be 5 or more characters.' });
+          });
       });
     });
 
     describe('Validando o password passado no body do endpoit', () => {
-      const id =  1;
+      const id = 1;
       const user = {
         id_user: id,
         name: 'Dheniarley Cruz',
         email: 'dheniarley@email.com',
-        password: '123141'
-      }
+        password: '123141',
+      };
 
       before(() => { sinon.stub(UserModel.prototype, 'getUser').resolves(user); });
       after(() => { sinon.restore(); });
@@ -592,7 +592,7 @@ describe('Testando a camada Controller', () => {
       it('Se o password não for passado, retorna um objeto especificando esse erro com status 400', async () => {
         const updateBody = {
           name: 'Dheniarley',
-          email: 'dheniarley@email.com'
+          email: 'dheniarley@email.com',
         };
 
         await chai.request(App.getApp())
@@ -608,7 +608,7 @@ describe('Testando a camada Controller', () => {
         const updateBody = {
           name: 'Dheniarley',
           email: 'dheniarley@email.com',
-          password: 123
+          password: 123,
         };
 
         await chai.request(App.getApp())
@@ -616,15 +616,15 @@ describe('Testando a camada Controller', () => {
           .send(updateBody)
           .then((res) => {
             expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password must be a string'});
-          })
+            expect(res.body).to.be.eql({ error: 'Password must be a string' });
+          });
       });
 
       it('Se o password passado for menor que 6 caracteres, retorna um objeto especificando esse erro com status 400', async () => {
         const updateBody = {
           name: 'Dheniarley',
           email: 'dheniarley@email.com',
-          password: '123'
+          password: '123',
         };
 
         await chai.request(App.getApp())
@@ -632,41 +632,41 @@ describe('Testando a camada Controller', () => {
           .send(updateBody)
           .then((res) => {
             expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password must be 6 or more characters.'})
+            expect(res.body).to.be.eql({ error: 'Password must be 6 or more characters.' });
           });
       });
     });
 
     describe('Quando ocorre algum erro no sevidor', () => {
-      const id =  1;
+      const id = 1;
       const user = {
         id_user: id,
         name: 'Dheniarley Cruz',
         email: 'dheniarley@email.com',
-        password: '123141'
-      }
+        password: '123141',
+      };
 
       const error = new Error('Internal Server Error');
 
-      before(() => { 
+      before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
-        sinon.stub(UserModel.prototype, 'create').throws(error) 
+        sinon.stub(UserModel.prototype, 'create').throws(error);
       });
       after(() => { sinon.restore(); });
 
       const userBody = {
-        name:'Beatriz Oliveira',
-        email: "beatriz@email.com",
-        password: 'beatrizsenha'
+        name: 'Beatriz Oliveira',
+        email: 'beatriz@email.com',
+        password: 'beatrizsenha',
       };
-      
+
       it('Se houver algum erro no sevidor, retorna status 500 e objeto com a message de error', async () => {
         await chai.request(App.getApp())
-        .put(`/users/${id}`)
-        .send(userBody)
-        .then((res) => {
-          expect(res.status).to.be.equal(500);
-        });
+          .put(`/users/${id}`)
+          .send(userBody)
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+          });
       });
     });
 
@@ -676,12 +676,12 @@ describe('Testando a camada Controller', () => {
         id_user: id,
         name: 'Dheniarley Cruz',
         email: 'dheny@gmail.com',
-        password: '123456789'
-      }
+        password: '123456789',
+      };
       const updateBody = {
         name: 'Dheniarley',
         email: 'dheniarley@email.com',
-        password: '987654321'
+        password: '987654321',
       };
 
       before(() => {
@@ -699,6 +699,6 @@ describe('Testando a camada Controller', () => {
             expect(res.body).to.be.eql({ id_user: id, ...updateBody });
           });
       });
-    })
+    });
   });
 });
