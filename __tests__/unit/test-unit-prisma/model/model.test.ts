@@ -1,5 +1,5 @@
 import UserModel from '../../../../backend/src/models/userModel';
-import { prisma } from '../../../../backend/src/database/connection';
+import prisma from '../../../../backend/src/database/connection';
 import { User } from '../../../../backend/src/interfaces/userInterface';
 
 const model = new UserModel();

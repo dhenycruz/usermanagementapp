@@ -4,7 +4,7 @@ import UserModel from '../../../../backend/src/models/userModel';
 import userService from '../../../../backend/src/services/userService';
 import { User } from '../../../../backend/src/interfaces/userInterface';
 
-const users = require('../../../../__tests__/data-user.json');
+const users = require('../../../data-user.json');
 
 interface UserID extends User{
   id_user: number,
@@ -35,7 +35,7 @@ describe('Testando a camada Service', () => {
         sinon.stub(UserModel.prototype, 'getUsers').resolves(usersReturn);
       });
 
-      after(() => { sinon.restore() });
+      after(() => { sinon.restore(); });
 
       it('Retorna um array vazio', async () => {
         const result = await userService.getUsers();
@@ -46,14 +46,14 @@ describe('Testando a camada Service', () => {
   });
 
   describe('Testando o método getUser', () => {
-    describe('Se houver algum usuário com o mesmo id passado',  () => {
+    describe('Se houver algum usuário com o mesmo id passado', () => {
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(users[0]);
       });
 
       after(() => { sinon.restore(); });
-      
-      const id  = 1;
+
+      const id = 1;
 
       it('Retorna um objeto com os dados desse usuário', async () => {
         const result = await userService.getUser(id);
@@ -66,7 +66,7 @@ describe('Testando a camada Service', () => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(null);
       });
 
-      after(() => { sinon.restore() });
+      after(() => { sinon.restore(); });
 
       const id = 1;
 
@@ -78,7 +78,7 @@ describe('Testando a camada Service', () => {
   });
 
   describe('Testando o método verifyEmailExists', () => {
-    describe('Se houver algum usuário com o mesmo email passado',  () => {
+    describe('Se houver algum usuário com o mesmo email passado', () => {
       before(() => {
         sinon.stub(UserModel.prototype, 'getUserByEmail').resolves(users[1]);
       });
@@ -105,7 +105,7 @@ describe('Testando a camada Service', () => {
       it('Retorna false caso não encontre algum usuário com o email passado', async () => {
         const result = await userService.verifyEmailExists(email);
         expect(result).to.be.false;
-      });  
+      });
     });
   });
 
@@ -114,26 +114,26 @@ describe('Testando a camada Service', () => {
       const userBody = {
         name: 'Juliano Alves',
         email: 'juliano@email.com',
-        password: 'minhasenha'
-      }
+        password: 'minhasenha',
+      };
 
       before(() => {
         sinon.stub(UserModel.prototype, 'create').resolves({ id_user: 1, ...userBody });
       });
 
-      after(() => { sinon.restore() });
+      after(() => { sinon.restore(); });
 
-    it('Retorna um objeto com dados do usuário e seu novo id', async () => {
-      const result = await userService.create(userBody);
-      expect(result).to.be.eql({ id_user: 1, ...userBody });
-    });
+      it('Retorna um objeto com dados do usuário e seu novo id', async () => {
+        const result = await userService.create(userBody);
+        expect(result).to.be.eql({ id_user: 1, ...userBody });
+      });
     });
 
     describe('Se req.body seja passado com alguma falha nas exigências passadas para o zod', () => {
       const userBody = {
         name: 'Dh',
         email: 'dheniarley@email.com',
-        password: 'minha123'
+        password: 'minha123',
       };
 
       it('Retorna um objeto com dados do erro', async () => {
@@ -150,17 +150,18 @@ describe('Testando a camada Service', () => {
       const userBody = {
         name: 'Dheniarley',
         email: 'dheny@email.com',
-        password: '123senha'
+        password: '123senha',
       };
 
       before(() => {
-        sinon.stub(UserModel.prototype, 'getUser').resolves({ id_user: id, ...{ 
-          name: "Dheniarley Cruz",
-          email: 'dheniarley@gmail.com',
-          password: 'minhasenha'
-        } });
-        sinon.stub(UserModel.prototype, 'update').resolves({ id_user: id, ...userBody});
-      })
+        sinon.stub(UserModel.prototype, 'getUser').resolves({ id_user: id,
+          ...{
+            name: 'Dheniarley Cruz',
+            email: 'dheniarley@gmail.com',
+            password: 'minhasenha',
+          } });
+        sinon.stub(UserModel.prototype, 'update').resolves({ id_user: id, ...userBody });
+      });
 
       after(() => { sinon.restore(); });
 
@@ -175,9 +176,9 @@ describe('Testando a camada Service', () => {
       const userBody = {
         name: 'Dheniarley',
         email: 'dheny@email.com',
-        password: '123senha'
+        password: '123senha',
       };
-      
+
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(null);
       });
@@ -195,7 +196,7 @@ describe('Testando a camada Service', () => {
       const userBody = {
         name: 'Dh',
         email: 'dheniarley@email.com',
-        password: 'minha123'
+        password: 'minha123',
       };
 
       before(() => {
@@ -204,7 +205,7 @@ describe('Testando a camada Service', () => {
 
       after(() => {
         sinon.restore();
-      })
+      });
 
       it('Retorna um objeto com dados do erro', async () => {
         const result = await userService.update(id, userBody);
@@ -219,11 +220,11 @@ describe('Testando a camada Service', () => {
       const id = 2;
       const user = {
         id_user: 2,
-        name: "Juliana Brandes",
-        email:"juju@email.com",
-        password: 'senha123'
+        name: 'Juliana Brandes',
+        email: 'juju@email.com',
+        password: 'senha123',
       };
-    
+
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
         sinon.stub(UserModel.prototype, 'delete').resolves(user);
@@ -231,8 +232,8 @@ describe('Testando a camada Service', () => {
 
       after(() => {
         sinon.restore();
-      }); 
-      
+      });
+
       it('caso o usuário seja deletado com sucesso o retorno séra um objeto desse usuário deletado', async () => {
         const result = await userService.delete(id);
         expect(result).to.be.a('object');
@@ -241,7 +242,7 @@ describe('Testando a camada Service', () => {
 
     describe('Caso não encontre o usuário que será deletado', () => {
       const id = 5;
-      
+
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(null);
       });

@@ -1,5 +1,5 @@
 import { users } from '@prisma/client';
-import { prisma }from '../database/connection';
+import prisma from '../database/connection';
 import { User } from '../interfaces/userInterface';
 
 interface Users extends User {
@@ -10,7 +10,7 @@ class UserModel {
     return prisma.users.create({
       data: body,
     });
-}
+  }
 
   async update(id: number, body: User): Promise<Users> {
     return prisma.users.update({
@@ -23,7 +23,7 @@ class UserModel {
     return prisma.users.findUnique({
       where: {
         id_user: id,
-      }
+      },
     });
   }
 
@@ -35,15 +35,15 @@ class UserModel {
     return prisma.users.findUnique({
       where: {
         email,
-      }
-    })
+      },
+    });
   }
 
   async delete(id: number): Promise <users | false> {
     return prisma.users.delete({
       where: {
         id_user: id,
-      }
+      },
     });
   }
 }
