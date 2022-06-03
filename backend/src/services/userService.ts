@@ -1,9 +1,16 @@
+import bcrypt from 'bcryptjs';
 import { users } from '@prisma/client';
 import { User, UserSchema } from '../interfaces/userInterface';
 import UserModel from '../models/userModel';
 
 interface ServiceError {
   error: string;
+}
+
+interface UserReturn {
+  id_user: number,
+  name: string,
+  email: string,
 }
 
 class UserService {
@@ -13,25 +20,29 @@ class UserService {
     this.model = new UserModel();
   }
 
-  async getUser(id: number): Promise<users | null> {
+  async getUser(id: number): Promise<UserReturn | null> {
     return this.model.getUser(id);
   }
 
-  async getUsers() {
+  async getUsers(): Promise<UserReturn[]> {
     return this.model.getUsers();
   }
 
-  async create(body: User): Promise<users | ServiceError | null> {
+  async create(body: User): Promise<UserReturn | ServiceError | null> {
     const parsed = UserSchema.safeParse(body);
     if (!parsed.success) {
       return { error: parsed.error.issues[0].message };
     }
+
+    const salt = await bcrypt.genSalt(10);
+    body.password = await bcrypt.hash(body.password, salt);
+
     return this.model.create(body);
   }
 
-  async update(id: number, body: User): Promise<users | ServiceError | false> {
+  async update(id: number, body: User): Promise<UserReturn | ServiceError | null> {
     const user = await this.model.getUser(id);
-    if (!user) return false;
+    if (!user) return null;
     const parsed = UserSchema.safeParse(body);
     if (!parsed.success) {
       return { error: parsed.error.issues[0].message };

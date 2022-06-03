@@ -2,33 +2,56 @@ import { users } from '@prisma/client';
 import prisma from '../database/connection';
 import { User } from '../interfaces/userInterface';
 
-interface Users extends User {
+interface UserReturn {
   id_user: number,
+  name: string,
+  email: string,
 }
+
+interface UserID extends User {
+  id_user: number;
+}
+
 class UserModel {
-  async create(body: User): Promise<Users> {
+  async create(body: User): Promise <UserReturn | null> {
     return prisma.users.create({
       data: body,
+      select: {
+        id_user: true,
+        email: true,
+        name: true,
+      },
     });
   }
 
-  async update(id: number, body: User): Promise<Users> {
+  async update(id: number, body: User): Promise<UserReturn | null> {
     return prisma.users.update({
       where: { id_user: id },
       data: body,
     });
   }
 
-  async getUser(id: number): Promise<Users | null> {
+  async getUser(id: number): Promise<UserReturn | null> {
     return prisma.users.findUnique({
       where: {
         id_user: id,
       },
+      select: {
+        id_user: true,
+        name: true,
+        email: true,
+      }
     });
   }
 
-  async getUsers(): Promise<Users[]> {
-    return prisma.users.findMany();
+  async getUsers(): Promise<UserReturn[]> {
+    return prisma.users.findMany({
+      select: {
+        id_user: true,
+        name: true,
+        email: true,
+      },
+    });
   }
 
   async getUserByEmail(email: string): Promise<User | null> {

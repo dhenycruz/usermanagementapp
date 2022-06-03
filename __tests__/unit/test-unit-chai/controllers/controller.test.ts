@@ -324,7 +324,7 @@ describe('Testando a camada Controller', () => {
 
       before(() => {
         sinon.stub(UserModel.prototype, 'getUserByEmail').resolves(null);
-        sinon.stub(UserModel.prototype, 'create').resolves({ id_user: idNewUser, ...userBody });
+        sinon.stub(UserModel.prototype, 'create').resolves({ id_user: idNewUser, name: 'Pedro Alvez', email: 'pedro@email.com' });
       });
       after(() => { sinon.restore(); });
 
@@ -334,7 +334,7 @@ describe('Testando a camada Controller', () => {
           .send(userBody)
           .then((res) => {
             expect(res.status).to.be.equal(201);
-            expect(res.body).to.be.eql({ id_user: idNewUser, ...userBody });
+            expect(res.body).to.be.eql({ id_user: idNewUser, name: 'Pedro Alvez', email: 'pedro@email.com'  });
           });
       });
     });
@@ -642,15 +642,14 @@ describe('Testando a camada Controller', () => {
       const user = {
         id_user: id,
         name: 'Dheniarley Cruz',
-        email: 'dheniarley@email.com',
-        password: '123141',
+        email: 'dheniarley@email.com'
       };
 
       const error = new Error('Internal Server Error');
 
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
-        sinon.stub(UserModel.prototype, 'create').throws(error);
+        sinon.stub(UserModel.prototype, 'update').throws(error);
       });
       after(() => { sinon.restore(); });
 
@@ -676,7 +675,6 @@ describe('Testando a camada Controller', () => {
         id_user: id,
         name: 'Dheniarley Cruz',
         email: 'dheny@gmail.com',
-        password: '123456789',
       };
       const updateBody = {
         name: 'Dheniarley',
@@ -686,7 +684,7 @@ describe('Testando a camada Controller', () => {
 
       before(() => {
         sinon.stub(UserModel.prototype, 'getUser').resolves(user);
-        sinon.stub(UserModel.prototype, 'update').resolves({ id_user: id, ...updateBody });
+        sinon.stub(UserModel.prototype, 'update').resolves(user);
       });
       after(() => { sinon.restore(); });
 
@@ -696,7 +694,7 @@ describe('Testando a camada Controller', () => {
           .send(updateBody)
           .then((res) => {
             expect(res.status).to.be.equal(201);
-            expect(res.body).to.be.eql({ id_user: id, ...updateBody });
+            expect(res.body).to.be.eql(user);
           });
       });
     });
