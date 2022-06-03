@@ -14,8 +14,8 @@ class UserRouter {
   ) {
     this.router.get(route, controller.getUsers);
     this.router.get(`${route}/:id`, controller.getUser);
-    this.router.post(route, controller.create);
-    this.router.put(`${route}/:id`, controller.update);
+    this.router.post(route, controller.validateEmail, controller.verifyEmailExists, controller.create);
+    this.router.put(`${route}/:id`, controller.validateEmail, controller.update);
     this.router.delete(`${route}/:id`, controller.delete);
   }
 }

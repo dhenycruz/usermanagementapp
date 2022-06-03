@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import service from '../services/userService';
 
 class UserController {
@@ -27,7 +27,6 @@ class UserController {
       const users = await service.getUsers();
       return res.status(200).json(users);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
@@ -39,9 +38,8 @@ class UserController {
       if (!newUser) {
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-
       if('error' in newUser) {
-        return res.status(400).json({ error: newUser.error.issues[0].message });
+        return res.status(400).json({ error: newUser.error });
       }
       res.status(201).json(newUser);
     } catch (error) {
@@ -59,7 +57,7 @@ class UserController {
       }
 
       if ('error' in updateUser) {
-        return res.status(400).json({ error: updateUser.error.issues[0].message });
+        return res.status(400).json({ error: updateUser.error });
       }
 
       res.status(201).json(updateUser);
@@ -75,9 +73,31 @@ class UserController {
       if (!user) return res.status(404).json({ error: 'User not found.' });
       res.status(204).json(user);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
+  }
+
+  async verifyEmailExists(req: Request, res: Response, next: NextFunction) {
+    const { body } = req;
+    try {
+      const user = await service.verifyEmailExists(body.email);
+      if (user) return res.status(401).json({ error: 'Email already registered'})
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    } 
+    next();
+  }
+
+  async validateEmail(req: Request, res: Response, next: NextFunction) {
+    const { body } = req;
+
+    if(!body.email) return res.status(400).json({ error: 'Email is required.' });
+
+    const result = await service.validateEmail(body.email);
+    
+    if(!result) return res.status(400).json({ error: 'Email invalid format.' });
+    
+    next();
   }
 }
 
