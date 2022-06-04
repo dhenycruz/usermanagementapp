@@ -1,0 +1,228 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Api de gerenciamento de usuários",
+    "description": "Essa API gerencia usuários que estão armazenados em um banco Postgree. <br><br> Desenvolvida por [Dheniarley Cruz](https://www.linkedin.com/in/dheniarley/)",
+    "termsOfService": "",
+    "contact": {
+      "email": "dheniarley.ds@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "",
+      "description": "API De Gerenciamento de Usuários"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "summary": "Cadastro de usuários",
+        "description": "Essa rota é responsável pelo cadastro de usuários",
+        "tags": ["users"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestBody"
+              },
+              "examples": {
+                "product": {
+                  "value": {
+                    "name": "Fulano",
+                    "email": "fulano@email.com",
+                    "password": "senhafulano"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content request body invalid"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "summary": "Retornado os usuários no banco de dados",
+        "description": "Essa rota é responsável por retornar os usuários salvos no banco de dados",
+        "tags": ["users"],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseBody"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Retornando um usuário",
+        "description": "Rota responsável por filtrar e retornar um usuário específico pelo seu id.",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto a ser atualizado.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserResponseBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizando usuários",
+        "description": "Essa rota é responsável por atualizar um usuário específico que foi filtrado pelo id.",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto a ser atualizado.",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestBody"
+              },
+              "examples": {
+                "product": {
+                  "value": {
+                    "name": "Fulano",
+                    "email": "fulano@email.com",
+                    "password": "senhafulano"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/UserResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content request body invalid"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletando usuários",
+        "description": "Essa rota é responsável por deletar um usuário específico que foi filtrado pelo id.",
+        "tags": ["users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id do produto a ser atualizado.",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "ok"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserRequestBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "passowrd": {
+            "type": "string"
+          }
+        }
+      },
+      "UserResponseBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
+
