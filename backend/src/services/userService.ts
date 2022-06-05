@@ -1,4 +1,4 @@
-import bcrypt from 'bcryptjs';
+import { genSalt, hash } from 'bcryptjs';
 import { users } from '@prisma/client';
 import { User, UserSchema } from '../interfaces/userInterface';
 import UserModel from '../models/userModel';
@@ -34,13 +34,20 @@ class UserService {
       return { error: parsed.error.issues[0].message };
     }
 
-    const salt = await bcrypt.genSalt(10);
-    body.password = await bcrypt.hash(body.password, salt);
+    const salt = await genSalt(10);
+    const newPassord = await hash(body.password, salt);
 
-    return this.model.create(body);
+    return this.model.create({
+      name: body.name,
+      email: body.email,
+      password: newPassord,
+    });
   }
 
-  async update(id: number, body: User): Promise<UserReturn | ServiceError | null> {
+  async update(
+    id: number,
+    body: User,
+  ): Promise<UserReturn | ServiceError | null> {
     const user = await this.model.getUser(id);
     if (!user) return null;
     const parsed = UserSchema.safeParse(body);
