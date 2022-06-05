@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "",
+      "url": "https://usermanagementapp27.herokuapp.com/",
       "description": "API De Gerenciamento de Usuários"
     }
   ],

@@ -9,7 +9,11 @@ class App {
   constructor() {
     this.app = express();
     this.app.use(express.json());
-    this.app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
+    this.app.use(
+      '/documentation',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDoc),
+    );
   }
 
   startServer(PORT: string | number = 3001): void {
