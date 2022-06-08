@@ -11,6 +11,7 @@ import {
 import styled from 'styled-components';
 import DeleteUser from '../Modals/DeleteUser';
 import CreateUser from '../Modals/CreateUser';
+import UpdateUser from '../Modals/UpdateUser';
 
 const BoxTable = styled.div`
   display: flex;
@@ -57,6 +58,7 @@ const HeaderBoxTable = styled.div`
 const TableUser = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDel, setIsOpenDel] = useState(false);
+  const [isOpenUp, setIsOpenUp] = useState(false);
   const [userSelected, setSelectUser] = useState({});
   const users = [1,2,3,4,5,6]
   const userExem = {
@@ -68,7 +70,12 @@ const TableUser = () => {
   const deleteUser = (user:object) => {
     setSelectUser(user);
     setIsOpenDel(true);
-  }
+  };
+
+  const updateUser = (user: object) => {
+    setSelectUser(user);
+    setIsOpenUp(true);
+  };
 
   return(
     <>
@@ -95,7 +102,7 @@ const TableUser = () => {
                   <Td>Dheniarley Cruz</Td>
                   <Td>dheniarley@email.com</Td>
                   <Td onClick={ () => deleteUser(userExem) }>excluir</Td>
-                  <Td>editar</Td>
+                  <Td onClick={ () => updateUser(userExem) }>editar</Td>
                 </Tr> ))
               }
             </Tbody>
@@ -104,6 +111,7 @@ const TableUser = () => {
       </BoxTable>
       <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } />
       <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
+      <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } />
     </>
   );
 };
