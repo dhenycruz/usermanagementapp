@@ -12,6 +12,8 @@ import styled from 'styled-components';
 import DeleteUser from '../Modals/DeleteUser';
 import CreateUser from '../Modals/CreateUser';
 import UpdateUser from '../Modals/UpdateUser';
+import Image from 'next/image';
+import SearchUser from '../../../public/search-user.png';
 
 const BoxTable = styled.div`
   display: flex;
@@ -30,6 +32,10 @@ const BoxTable = styled.div`
     border: 1px solid #5f00db39;
     background-color: #5f00db39;
   }
+
+  img:hover {
+    cursor: pointer;
+  }
 `;
 
 const HeaderBoxTable = styled.div`
@@ -40,6 +46,7 @@ const HeaderBoxTable = styled.div`
   margin-top: 20px;
 
   h2 {
+    color: #510183;
     margin-left: 50px;
   }
 
@@ -52,6 +59,35 @@ const HeaderBoxTable = styled.div`
 
   button:hover {
     background-color: #5f00db39;
+  }
+`;
+
+const InputSearch = styled.div`
+  align-items: center;
+  background-color: white;
+  display: flex;
+  height: 40px;
+  padding-right: 5px;
+  width: 300px;
+
+  &:hover {
+    outline: 2px solid #6600cc;
+  }
+
+  input {
+    color: #6600cc;
+    font-size: 16px;
+    height: 100%;
+    text-align: center;
+    width: 100%;
+  }
+
+  input:hover {
+    background-color: white;
+  }
+
+  input:focus {
+    outline: 1px solid #6600cc;
   }
 `;
 
@@ -82,6 +118,11 @@ const TableUser = () => {
       <BoxTable>
         <HeaderBoxTable>
           <h2>Lista de usuários</h2>
+          <InputSearch>
+            <input placeholder="Pesquisar por usuários"/>
+            {/* https://icons8.com.br/icons/set/search--purple */}
+            <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
+          </InputSearch>
           <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
         </HeaderBoxTable>
         <TableContainer>
