@@ -46,7 +46,7 @@
         "max-lines-per-function": [ //  número máximo de linhas de código em uma função
         "error",
         {
-            "max": 20,
+            "max": 30,
             "skipBlankLines": true,
             "skipComments": true
         }
