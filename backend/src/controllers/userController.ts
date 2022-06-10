@@ -1,6 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import service from '../services/userService';
 
+interface QuerySearch extends Request {
+  query: {
+    take: string,
+    skip: string,
+    query: string,
+  }
+}
+
 class UserController {
   private _route: string;
 
@@ -12,6 +20,7 @@ class UserController {
 
   async getUser(req: Request, res: Response) {
     const { id } = req.params;
+
     try {
       const users = await service.getUser(Number(id));
       return users
@@ -22,9 +31,24 @@ class UserController {
     }
   }
 
-  async getUsers(_req: Request, res: Response) {
+  async getUsers(req: Request, res: Response) {
+    const { take, skip } = req.query;
+
     try {
-      const users = await service.getUsers();
+      const users = await service.getUsers(Number(take), Number(skip));
+      return res.status(200).json(users);
+    } catch (error) {
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
+  async getUsersByQuery(req: QuerySearch, res: Response) {
+    const { take, skip, query } = req.query;
+    console.log(query);
+
+    try {
+      const users = await service
+        .getUserByQuery(Number(take), Number(skip), query);
       return res.status(200).json(users);
     } catch (error) {
       return res.status(500).json({ error: 'Internal Server Error' });

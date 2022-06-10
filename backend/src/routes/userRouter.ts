@@ -14,6 +14,7 @@ class UserRouter {
   ) {
     this.router.get(route, controller.getUsers);
     this.router.get(`${route}/:id`, controller.getUser);
+    this.router.get('/search', controller.getUsersByQuery);
     this.router.post(
       route,
       controller.validateEmail,

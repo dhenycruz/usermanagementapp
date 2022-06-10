@@ -8,8 +8,9 @@ interface UserReturn {
   email: string,
 }
 
-interface UserID extends User {
-  id_user: number;
+interface GetAllUsers {
+  totalRows: number,
+  getAllUsers: UserReturn[],
 }
 
 class UserModel {
@@ -40,18 +41,23 @@ class UserModel {
         id_user: true,
         name: true,
         email: true,
-      }
+      },
     });
   }
 
-  async getUsers(): Promise<UserReturn[]> {
-    return prisma.users.findMany({
+  async getUsers(take: number, skip: number): Promise<GetAllUsers> {
+    const totalRows = await prisma.users.count();
+    const getAllUsers = await prisma.users.findMany({
+      take,
+      skip, // Skip the cursor */
       select: {
         id_user: true,
         name: true,
         email: true,
       },
     });
+
+    return { totalRows, getAllUsers };
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
@@ -60,6 +66,38 @@ class UserModel {
         email,
       },
     });
+  }
+
+  async getUserByQuery(
+    take:number,
+    skip: number,
+    query: string,
+  ): Promise<GetAllUsers> {
+    const totalRows = await prisma.users.count({
+      where: {
+        OR: [
+          { email: { contains: query } },
+          { name: { contains: query } },
+        ],
+      },
+    });
+    const getAllUsers = await prisma.users.findMany({
+      take,
+      skip, // Skip the cursor */
+      where: {
+        OR: [
+          { email: { contains: query, mode: 'insensitive' } },
+          { name: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+      select: {
+        id_user: true,
+        name: true,
+        email: true,
+      },
+    });
+
+    return { totalRows, getAllUsers };
   }
 
   async delete(id: number): Promise <users | false> {

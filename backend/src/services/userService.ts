@@ -13,6 +13,11 @@ interface UserReturn {
   email: string,
 }
 
+interface GetAllUsers {
+  totalRows: number,
+  getAllUsers: UserReturn[],
+}
+
 class UserService {
   private model: UserModel;
 
@@ -24,8 +29,16 @@ class UserService {
     return this.model.getUser(id);
   }
 
-  async getUsers(): Promise<UserReturn[]> {
-    return this.model.getUsers();
+  async getUsers(take: number, skip: number): Promise<GetAllUsers> {
+    return this.model.getUsers(take, skip);
+  }
+
+  async getUserByQuery(
+    take: number,
+    skip: number,
+    query: string,
+  ): Promise<GetAllUsers> {
+    return this.model.getUserByQuery(take, skip, query);
   }
 
   async create(body: User): Promise<UserReturn | ServiceError | null> {
