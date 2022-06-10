@@ -71,38 +71,38 @@ describe('Testando a camada Controller', () => {
     });
   });
 
-  describe('Testando o endpoint get /users', () => {
+  describe('Testando o endpoint get /users/?take=7&skip=0', () => {
     describe('Quando existe usuários salvos no banco de dados', () => {
       before(() => {
-        sinon.stub(UserModel.prototype, 'getUsers').resolves(users);
+        sinon.stub(UserModel.prototype, 'getUsers').resolves({ totalRows: 7, getAllUsers: users });
       });
 
       after(() => { sinon.restore(); });
 
-      it('Retorna um array de objetos com dados dos usuários cadastrados', async () => {
+      it('Retorna um objeto com total de usuários no banco de objetos com dados dos usuários cadastrados', async () => {
         await chai.request(App.getApp())
-          .get('/users')
+          .get('/users/?take=7&skip=0')
           .then((res) => {
             expect(res.status).to.be.equal(200);
-            expect(res.body).to.be.eql(users);
+            expect(res.body).to.be.eql({ totalRows: 7, getAllUsers: users });
           });
       });
     });
 
     describe('Quando não existe nenhum dado salvo no banco de dados', () => {
       before(() => {
-        sinon.stub(UserModel.prototype, 'getUsers').resolves([]);
+        sinon.stub(UserModel.prototype, 'getUsers').resolves({ totalRows: 0, getAllUsers: [] });
       });
 
       after(() => { sinon.restore(); });
 
       it('Retorna um array vazio', async () => {
         await chai.request(App.getApp())
-          .get('/users')
+          .get('/users/?take=7&skip=0')
           .then((res) => {
             expect(res.status).to.be.equal(200);
-            expect(res.body).to.be.a('array');
-            expect(res.body.length).to.be.equal(0);
+            expect(res.body).to.be.a('object');
+            expect(res.body.getAllUsers.length).to.be.equal(0);
           });
       });
     });
@@ -114,7 +114,56 @@ describe('Testando a camada Controller', () => {
 
       it('Retorna status 500 e o objeto com message do erro', async () => {
         await chai.request(App.getApp())
-          .get('/users/')
+          .get('/users/?take=7&skip=0')
+          .then((res) => {
+            expect(res.status).to.be.equal(500);
+          });
+      });
+    });
+  });
+
+  describe('Testando o endpoit get /search/?take=6&skip=0&query=test', () => {
+    describe('Se encontrar usuários correspondente a query passada', () => {
+      before(() => {
+        sinon.stub(UserModel.prototype, 'getUserByQuery').resolves({ totalRows: 1, getAllUsers: [users[0]] })
+      });
+      after(() => {  sinon.restore(); });
+
+      it('Retorna um objeto com total de usuários no banco de objetos com dados dos usuários cadastrados', async () => {
+        await chai.request(App.getApp())
+          .get('/search/?take=6&skip=0&query=ju')
+          .then((res) => {
+            expect(res.status).to.be.equal(200);
+            expect(res.body).to.be.eql({ totalRows: 1, getAllUsers: [users[0]] });
+          });
+      });
+    });
+
+    describe('Se não encontrar usuários correspondente a query passada', () => {
+      before(() => {
+        sinon.stub(UserModel.prototype, 'getUserByQuery').resolves({ totalRows: 0, getAllUsers: [] })
+      });
+      after(() => {  sinon.restore(); });
+
+      it('Retorna um objeto com total de usuários igual a zero e um array vazio', async () => {
+        await chai.request(App.getApp())
+          .get('/search/?take=6&skip=0&query=nono')
+          .then((res) => {
+            expect(res.status).to.be.equal(200);
+            expect(res.body).to.be.eql({ totalRows: 0, getAllUsers: [] });
+          });
+      });
+    });
+
+    describe('Se ocorrer algum error no server', () => {
+      before(() => {
+        sinon.stub(UserModel.prototype, 'getUserByQuery').throws();
+      });
+      after(() => { sinon.restore(); });
+
+      it('Retorna status 500 e o objeto com message do erro', async () => {
+        await chai.request(App.getApp())
+          .get('/search/?take=6&skip=0&query=dhe')
           .then((res) => {
             expect(res.status).to.be.equal(500);
           });
