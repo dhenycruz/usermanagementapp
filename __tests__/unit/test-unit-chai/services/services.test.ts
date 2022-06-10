@@ -19,30 +19,34 @@ describe('Testando a camada Service', () => {
   describe('Testando o método getUsers', () => {
     describe('Se houver usuários salvos no banco', () => {
       before(() => {
-        sinon.stub(UserModel.prototype, 'getUsers').resolves(users);
+        sinon.stub(UserModel.prototype, 'getUsers').resolves({ totalRows: 7, getAllUsers: users });
       });
 
       after(() => { sinon.restore(); });
 
       it('Retorna um array de objetos', async () => {
-        const result = await userService.getUsers();
-        expect(result).to.be.eql(users);
+        const take = 6;
+        const skip = 0;
+        const result = await userService.getUsers(take, skip);
+        expect(result).to.be.eql({ totalRows: 7, getAllUsers: users });
       });
     });
 
     describe('Se não houver usuários salvos no banco', () => {
       const usersReturn: User[] = [];
       before(() => {
-        sinon.stub(UserModel.prototype, 'getUsers').resolves(usersReturn);
+        sinon.stub(UserModel.prototype, 'getUsers').resolves({ totalRows: 0, getAllUsers: usersReturn });
       });
 
       after(() => { sinon.restore(); });
 
       it('Retorna um array vazio', async () => {
-        const result = await userService.getUsers();
+        const take = 6;
+        const skip = 0;
+        const result = await userService.getUsers(take, skip);
         console.log(result);
-        expect(result).to.be.a('array');
-        expect(result.length).to.be.equal(0);
+        expect(result).to.be.a('object');
+        expect(result.getAllUsers.length).to.be.equal(0);
       });
     });
   });
@@ -75,6 +79,46 @@ describe('Testando a camada Service', () => {
       it('Retorna null', async () => {
         const result = await userService.getUser(id);
         expect(result).to.be.null;
+      });
+    });
+  });
+
+  describe('Testando o método getUserByQuery', () => {
+    describe('Se encontrar algum usuário que contém a query no seu nome ou email', () => {
+      const user = {
+        "id_user": 5,
+        "name": "Eduardo",
+        "email": "eduardo@email.com"
+      };
+
+      before(() => {
+        sinon.stub(UserModel.prototype, 'getUserByQuery').resolves({ totalRows: 1, getAllUsers: [user] })
+      });
+      after(() => { sinon.restore(); });
+
+      it('Retorna um objeto com o total de usuários correspondentes a query e array com esses usuários', async () => {
+        const take = 6;
+        const skip = 0;
+        const query = 'edu';
+
+        const result = await userService.getUserByQuery(take, skip, query);
+        expect(result).to.be.eql({ totalRows: 1, getAllUsers: [user] });
+      });
+    });
+
+    describe('Se não encontrar nenhum usuário', () => {
+      before(() => {
+        sinon.stub(UserModel.prototype, 'getUserByQuery').resolves({ totalRows: 0, getAllUsers: [] })
+      });
+      after(() => { sinon.restore(); });
+
+      it('Retorna um objeto com o total de usuários correspondentes a zero e um array vazio', async () => {
+        const take = 6;
+        const skip = 0;
+        const query = 'edu';
+
+        const result = await userService.getUserByQuery(take, skip, query);
+        expect(result).to.be.eql({ totalRows: 0, getAllUsers: [] });
       });
     });
   });

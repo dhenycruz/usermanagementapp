@@ -10,6 +10,8 @@ interface UserID extends User {
 
 describe('Testando a camada model: class UserModel - método getUsers:', () => {
   prisma.users.findMany = jest.fn();
+  prisma.users.count = jest.fn();
+
   test('Retorna todos os usuários salvos no banco de dados.', async () => {
     const users = [
       {
@@ -38,16 +40,21 @@ describe('Testando a camada model: class UserModel - método getUsers:', () => {
       }
     ];
 
+    jest.spyOn(prisma.users, 'count').mockResolvedValue(4);
     jest.spyOn(prisma.users, 'findMany').mockResolvedValue(users);
+    const take = 6;
+    const skip = 0;
   
-    await expect(model.getUsers()).resolves.toEqual(users);
+    await expect(model.getUsers(take, skip)).resolves.toEqual({ totalRows: 4, getAllUsers: users });
   });
 
   test('Se não haver nenhum usuário no banco de dados, deverá retorna um array vazio', async () => {
     const users: UserID[] = [];
+    jest.spyOn(prisma.users, 'count').mockResolvedValue(0);
     jest.spyOn(prisma.users, 'findMany').mockResolvedValue(users);
-    
-    await expect(model.getUsers()).resolves.toEqual(users);
+    const take = 6;
+    const skip = 0;
+    await expect(model.getUsers(take, skip)).resolves.toEqual({ totalRows: 0, getAllUsers: users });
   });
 });
 
@@ -100,6 +107,45 @@ describe('Testando a camada model: class UserModel - método getUserByEmail', ()
     jest.spyOn(prisma.users, 'findUnique').mockResolvedValue(user);
 
     await expect(model.getUserByEmail(email)).resolves.toEqual(user);
+  });
+});
+
+describe('Testnado a camda model: class UserModel - método getUserByQuery', () => {
+  prisma.users.count = jest.fn();
+  prisma.users.findMany = jest.fn();
+  test('Se houver um ou mais usuário com a query passada, vai retornar o total de usuários achados e um array com os usuários', async () => {
+    const take = 6;
+    const skip = 0;
+    const query = 'ju';
+
+    const user = [
+      {
+        "id_user": 1,
+        "name": "Juliana",
+        "email": "ju@email.com",
+        "password": 'senha',
+     }
+    ];
+  
+    
+    jest.spyOn(prisma.users, 'count').mockResolvedValue(1);
+    jest.spyOn(prisma.users,  'findMany').mockResolvedValue(user);
+
+    await expect(model.getUserByQuery(take, skip, query)).resolves.toEqual({ totalRows: 1, getAllUsers: user });
+  });
+
+  test('Se não encontrar nenhum usuário que contém a query, retorna como zero o total de user e um array vazio', async () => {
+    const take = 6;
+    const skip = 0;
+    const query = 'dio';
+
+    const user: UserID[] = [];
+  
+    
+    jest.spyOn(prisma.users, 'count').mockResolvedValue(0);
+    jest.spyOn(prisma.users,  'findMany').mockResolvedValue(user);
+
+    await expect(model.getUserByQuery(take, skip, query)).resolves.toEqual({ totalRows: 0, getAllUsers: user });
   });
 });
 
