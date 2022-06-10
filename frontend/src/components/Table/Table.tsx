@@ -14,6 +14,7 @@ import CreateUser from '../Modals/CreateUser';
 import UpdateUser from '../Modals/UpdateUser';
 import Image from 'next/image';
 import SearchUser from '../../../public/search-user.png';
+import Pagination from '../Pagination/Pagination';
 
 const BoxTable = styled.div`
   display: flex;
@@ -60,6 +61,11 @@ const HeaderBoxTable = styled.div`
   button:hover {
     background-color: #5f00db39;
   }
+`;
+
+const FooterBoxTable = styled.div`
+  display: flex;
+  margin-top: 40px;
 `;
 
 const InputSearch = styled.div`
@@ -149,6 +155,9 @@ const TableUser = () => {
             </Tbody>
           </Table>
         </TableContainer>
+        <FooterBoxTable>
+          <Pagination />
+        </FooterBoxTable>
       </BoxTable>
       <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } />
       <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />

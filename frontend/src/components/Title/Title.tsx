@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const TitleH1 = styled.h1`
+const TitleH1 = styled.h1<{ active: Boolean }>`
   animation: fadeIn 2s;
   font-size: 18px;
   margin-bottom: 10px;
@@ -27,7 +27,7 @@ const TitleH1 = styled.h1`
   }
 `;
 
-const TitleFadeIN = styled.h1`
+const TitleFadeIN = styled.h1<{ active: Boolean }>`
   animation: fadeIn 2s;
   -webkit-animation: fadeIn 2s;
   -moz-animation: fadeIn 2s;

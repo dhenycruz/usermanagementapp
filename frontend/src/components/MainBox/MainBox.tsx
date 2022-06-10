@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Box = styled.div`
-  display: flex;
-  flex-direction: column;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 3%;
+  display: flex;
+  flex-direction: column;
   color: black;
-  height: 100%
   min-height: 500px;
   padding: 10px;
   width: 750px;
