@@ -1,7 +1,8 @@
 import axios from 'axios';
-require('dotenv').config();
 
-const BASE_URL = process.env.BASEURL;
+const BASE_URL = process.env.BASE_URL;
+
+console.log(BASE_URL)
 
 interface User {
   id_user: number;
@@ -20,7 +21,7 @@ interface UserBody {
   password: string;
 }
 
-export const getAllUsers = async(take: number, skip:number): Promise<Users> => {
+export const fetchAllUsers = async(take: number, skip:number): Promise<Users> => {
   const users = await axios.get(`${BASE_URL}/users/?take=${take}&skyp=${skip}`);
   return users.data;
 };

@@ -22,7 +22,7 @@ const Nav = styled.div`
   }
 `;
 
-const NavBar = () => {
+const NavBar: React.FC = () => {
   return (
     <Nav>
       { /* https://icons8.com.br/icons/set/users-cell--purple */ }

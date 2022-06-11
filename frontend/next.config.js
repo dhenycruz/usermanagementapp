@@ -1,7 +1,11 @@
 /**  @type {import('next').NextConfig} */
+require('dotenv').config();
 
-const nextConfig = {
-  reactStrictMode: true,
-}
-
-module.exports = nextConfig
+module.exports = { 
+  nextConfig: {
+    reactStrictMode: true,
+  },
+  env: {
+    BASE_URL: process.env.BASEURL
+  }
+};

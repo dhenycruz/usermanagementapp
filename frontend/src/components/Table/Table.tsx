@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   Table,
   Thead,
@@ -15,6 +15,7 @@ import UpdateUser from '../Modals/UpdateUser';
 import Image from 'next/image';
 import SearchUser from '../../../public/search-user.png';
 import Pagination from '../Pagination/Pagination';
+import { UserContext } from '../../context/UserContext';
 
 const BoxTable = styled.div`
   display: flex;
@@ -102,7 +103,8 @@ const TableUser = () => {
   const [isOpenDel, setIsOpenDel] = useState(false);
   const [isOpenUp, setIsOpenUp] = useState(false);
   const [userSelected, setSelectUser] = useState({});
-  const users = [1,2,3,4,5,6]
+  const { users, setUsers, getUsers } = useContext(UserContext);
+
   const userExem = {
     id_user: 1,
     name: 'Dheniarley',
@@ -118,6 +120,12 @@ const TableUser = () => {
     setSelectUser(user);
     setIsOpenUp(true);
   };
+
+  const users1 = [1,2,3];
+
+  useEffect(() => {
+    console.log(getUsers(6,0));
+  }, []);
 
   return(
     <>
@@ -143,7 +151,7 @@ const TableUser = () => {
               </Tr>
             </Thead>
             <Tbody>
-              { users.map((_user, index) => (
+              { users1.map((_user: number, index: number) => (
                 <Tr key={ index }>
                   <Td><b>{ index + 1 }</b></Td>
                   <Td>Dheniarley Cruz</Td>

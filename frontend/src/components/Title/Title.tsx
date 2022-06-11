@@ -55,20 +55,20 @@ const TitleFadeIN = styled.h1<{ active: Boolean }>`
   }
 `;
 
-const TitleWelcome = () => {
+const TitleWelcome: React.FC = () => {
   const [fade, setFade] = useState(true);
 
   useEffect(() => {
-    setTimeout(function(){
-      setFade(false)
-    },4000);
+    setTimeout(() => {
+      setFade(false);
+    }, 4000);
   }, []);
-  return(
+  return (
     <>
-      <TitleH1 active={ fade }>SEJA BEM VINDO!</TitleH1>
-      <TitleFadeIN active={ fade }>Ao seu gerenciador de usuários.</TitleFadeIN>
+      <TitleH1 active={fade}>SEJA BEM VINDO!</TitleH1>
+      <TitleFadeIN active={fade}>Ao seu gerenciador de usuários.</TitleFadeIN>
     </>
-  )
+  );
 }
 
 export default TitleWelcome;
