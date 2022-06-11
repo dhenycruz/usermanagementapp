@@ -22,7 +22,7 @@ interface UserBody {
 }
 
 export const fetchAllUsers = async(take: number, skip:number): Promise<Users> => {
-  const users = await axios.get(`${BASE_URL}/users/?take=${take}&skyp=${skip}`);
+  const users = await axios.get(`${BASE_URL}/users/?take=${take}&skip=${skip}`);
   return users.data;
 };
 

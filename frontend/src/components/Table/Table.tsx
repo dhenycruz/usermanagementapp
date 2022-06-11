@@ -123,10 +123,6 @@ const TableUser = () => {
 
   const users1 = [1,2,3];
 
-  useEffect(() => {
-    console.log(getUsers(6,0));
-  }, []);
-
   return(
     <>
       <BoxTable>

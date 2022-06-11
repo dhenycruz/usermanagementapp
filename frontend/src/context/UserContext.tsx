@@ -1,5 +1,5 @@
 import {
-  useState, createContext, ReactNode,
+  useState, createContext, ReactNode, useEffect,
 } from 'react';
 import { IUserResponse } from '../interfaces/interfaces';
 import { fetchAllUsers } from '../services/api-backend';
@@ -19,8 +19,13 @@ export function UserProvider({ children }: Props) {
 
   const getUsers = async (take: number, skip: number): Promise <IUserResponse> => {
     const { totalRows, getAllUsers} = await fetchAllUsers(take, skip);
+    console.log(getAllUsers);
     return { totalRows, getAllUsers};
   };
+
+  useEffect(() => {
+    getUsers(6,0);
+  }, []);
 
   return (
     <UserContext.Provider value={ { users, setUsers, getUsers }}>
