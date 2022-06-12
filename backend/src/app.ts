@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
 
+const cors = require('cors');
 const swaggerDoc = require('./swagger.json');
 
 class App {
@@ -9,6 +10,7 @@ class App {
   constructor() {
     this.app = express();
     this.app.use(express.json());
+    this.app.use(cors());
     this.app.use(
       '/documentation',
       swaggerUi.serve,
