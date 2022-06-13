@@ -1,13 +1,19 @@
 import {
-  useState, createContext, ReactNode, useEffect,
+  useState, createContext, ReactNode, useEffect
 } from 'react';
-import { IUserResponse } from '../interfaces/interfaces';
+import { IUser } from '../interfaces/interfaces';
 import { fetchAllUsers } from '../services/api-backend';
 
 interface IUserContext {
-  users: object[],
-  setUsers: Function,
-  getUsers: Function,
+  users: IUser[],
+  setGetUsers(param: IUser[]): void,
+  getUsers(take: number, skip: number): void,
+  loading: boolean,
+  setLoading(param: boolean): void,
+  rowsTotal: number,
+  setTotalRows(param: number): void,
+  skip: number,
+  setSkip(param: number): void,
 }
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
@@ -15,20 +21,36 @@ export const UserContext = createContext<IUserContext>({} as IUserContext);
 type Props = { children: ReactNode }
 
 export function UserProvider({ children }: Props) {
-  const [users, setUsers] = useState([]);
+  const [users, setGetUsers] = useState<IUser[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [rowsTotal, setTotalRows] = useState<number>(0);
+  const [skip, setSkip] = useState<number>(0);
 
-  const getUsers = async (take: number, skip: number): Promise <IUserResponse> => {
-    const { totalRows, getAllUsers} = await fetchAllUsers(take, skip);
-    console.log(getAllUsers);
-    return { totalRows, getAllUsers};
+  const getUsers = async (take: number, paramSkip: number): Promise<void> => {
+    const { totalRows, getAllUsers} = await fetchAllUsers(take, paramSkip);
+    setGetUsers(getAllUsers);
+    setTotalRows(totalRows);
+    setTimeout(() => {
+      setLoading(false);
+    }, 4000);
   };
 
   useEffect(() => {
-    getUsers(6,0);
-  }, []);
+    getUsers(6, skip);
+  }, [users]);
 
   return (
-    <UserContext.Provider value={ { users, setUsers, getUsers }}>
+    <UserContext.Provider value={ {
+      users,
+      setGetUsers,
+      getUsers,
+      loading,
+      setLoading,
+      rowsTotal,
+      setTotalRows,
+      skip,
+      setSkip,
+    }}>
       { children }
     </UserContext.Provider>
   );

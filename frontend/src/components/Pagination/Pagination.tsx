@@ -1,4 +1,5 @@
-import{ useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 import styled from 'styled-components';
 
 const Button = styled.button<{ active: Boolean }>`
@@ -20,30 +21,53 @@ const Button = styled.button<{ active: Boolean }>`
 `;
 
 const Pagination = () => {
-  const [activePage, setActivePage] = useState(0);
-  const pages = [1,2,3,4];
+  const { users, rowsTotal, setLoading, setSkip } = useContext(UserContext);
+  const [activePage, setActivePage] = useState(1);
+  const [totalPages, setPages] = useState<number[]>([1]);
 
   useEffect(() => {
     if(activePage <= 0) {
       setActivePage(1);
     }
-    if(activePage >= pages.length) {
-      setActivePage(pages.length);
+    if(activePage >= totalPages.length) {
+      setActivePage(totalPages.length);
     }
-  }, [activePage, pages.length]);
+  }, [activePage, totalPages.length, users]);
+
+  const clickPage = (pageNumber: number) => {
+    const skip =  (6 * pageNumber) -6;
+    setActivePage(pageNumber);
+    setLoading(true);
+    setSkip(skip);
+  };
+
+
+  useEffect(() => {
+    const pages = Math.ceil((rowsTotal / 6));
+    if (pages < 1) {
+      setPages([1]);
+    } else {
+      const pagesArray= []
+      for (let pagesN = 1; pagesN <= pages; pagesN++) {
+        pagesArray.push(pagesN);
+    }
+      setPages(pagesArray);
+    }
+  }, [users]);
+
   return (
     <>
-    <Button type="button" active={ false } onClick={ () => setActivePage(1) }>{ '<<' }</Button>
+    <Button type="button" active={ false } onClick={ () => clickPage(1) }>{ '<<' }</Button>
     <Button type="button" active={ false } onClick={ () => setActivePage(activePage - 1) }>{ '<' } </Button>
 
     {
-      pages.map((page, index) => (
+      totalPages.map((page: number, index: number) => (
         (activePage === page) ?
         <Button
           key={ index }
           type="button"
           active={ true }
-          onClick={ () => setActivePage(page) }
+          onClick={ () => clickPage(page) }
         >
           { page }
         </Button>
@@ -51,7 +75,7 @@ const Pagination = () => {
             key={ index }
             type="button"
             active={ false }
-            onClick={ () => setActivePage(page) }
+            onClick={ () => clickPage(page) }
           >
             { page }
           </Button>
@@ -63,7 +87,7 @@ const Pagination = () => {
     <Button type="button">3</Button> */}
 
     <Button type="button" active={ false } onClick={ () => setActivePage(activePage + 1) }>{ '>' } </Button>
-    <Button type="button" active={ false }onClick={ () => setActivePage(pages.length) }>{ '>>' } </Button>
+    <Button type="button" active={ false }onClick={ () => setActivePage(totalPages.length) }>{ '>>' } </Button>
     </>
   );
 };

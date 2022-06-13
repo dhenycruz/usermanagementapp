@@ -6,7 +6,7 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   color: black;
-  min-height: 500px;
+  height: 550px;
   padding: 10px;
   width: 750px;
 

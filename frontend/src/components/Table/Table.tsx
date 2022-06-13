@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import {
   Table,
   Thead,
@@ -16,12 +16,14 @@ import Image from 'next/image';
 import SearchUser from '../../../public/search-user.png';
 import Pagination from '../Pagination/Pagination';
 import { UserContext } from '../../context/UserContext';
+import { IUser } from '../../interfaces/interfaces';
 
 const BoxTable = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
+  height: 100%;
 
   tbody tr:hover {
     background-color: #5f00db39;
@@ -37,6 +39,13 @@ const BoxTable = styled.div`
 
   img:hover {
     cursor: pointer;
+  }
+
+  .tableBody {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 65%;
   }
 `;
 
@@ -66,6 +75,8 @@ const HeaderBoxTable = styled.div`
 
 const FooterBoxTable = styled.div`
   display: flex;
+  width: 100%;
+  justify-content:center;
   margin-top: 40px;
 `;
 
@@ -102,26 +113,18 @@ const TableUser = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDel, setIsOpenDel] = useState(false);
   const [isOpenUp, setIsOpenUp] = useState(false);
-  const [userSelected, setSelectUser] = useState({});
-  const { users, setUsers, getUsers } = useContext(UserContext);
+  const [userSelected, setSelectUser] = useState<IUser>({} as IUser);
+  const { users } = useContext(UserContext);
 
-  const userExem = {
-    id_user: 1,
-    name: 'Dheniarley',
-    email: 'dheniarley@email.com',
-  }
-
-  const deleteUser = (user:object) => {
+  const deleteUser = (user: IUser) => {
     setSelectUser(user);
     setIsOpenDel(true);
   };
 
-  const updateUser = (user: object) => {
+  const updateUser = (user: IUser) => {
     setSelectUser(user);
     setIsOpenUp(true);
   };
-
-  const users1 = [1,2,3];
 
   return(
     <>
@@ -135,35 +138,37 @@ const TableUser = () => {
           </InputSearch>
           <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
         </HeaderBoxTable>
-        <TableContainer>
-          <Table variant='simple'>
-            <Thead>
-              <Tr>
-                <Th>#id</Th>
-                <Th>nome</Th>
-                <Th>email</Th>
-                <Th></Th>
-                <Th></Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              { users1.map((_user: number, index: number) => (
-                <Tr key={ index }>
-                  <Td><b>{ index + 1 }</b></Td>
-                  <Td>Dheniarley Cruz</Td>
-                  <Td>dheniarley@email.com</Td>
-                  <Td onClick={ () => deleteUser(userExem) }>excluir</Td>
-                  <Td onClick={ () => updateUser(userExem) }>editar</Td>
-                </Tr> ))
-              }
-            </Tbody>
-          </Table>
+        <TableContainer className="tableBody">
+          { users.length <= 0 ? ( <p>Nenhum usuário cadastrado!</p> ) :(
+            <Table variant='simple'>
+              <Thead>
+                <Tr>
+                  <Th>#id</Th>
+                  <Th>nome</Th>
+                  <Th>email</Th>
+                  <Th></Th>
+                  <Th></Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                { users.map((user:  IUser, index: number) => (
+                  <Tr key={ index }>
+                    <Td><b>{ user.id_user }</b></Td>
+                    <Td>{ user.name }</Td>
+                    <Td>{ user.email }</Td>
+                    <Td onClick={ () => deleteUser(user) }>excluir</Td>
+                    <Td onClick={ () => updateUser(user) }>editar</Td>
+                  </Tr> ))
+                }
+              </Tbody>
+            </Table>
+          )}
         </TableContainer>
         <FooterBoxTable>
-          <Pagination />
+          { users.length > 0 &&  <Pagination /> }
         </FooterBoxTable>
       </BoxTable>
-      <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } />
+      <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } user={ userSelected } />
       <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
       <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } />
     </>
