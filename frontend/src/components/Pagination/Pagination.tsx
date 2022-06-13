@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
+import { fetchAllUsers } from '../../services/api-backend';
 import styled from 'styled-components';
 
 const Button = styled.button<{ active: Boolean }>`
@@ -21,26 +22,52 @@ const Button = styled.button<{ active: Boolean }>`
 `;
 
 const Pagination = () => {
-  const { users, rowsTotal, setLoading, setSkip } = useContext(UserContext);
+  const { rowsTotal, setGetUsers, loading, setLoading } = useContext(UserContext);
   const [activePage, setActivePage] = useState(1);
   const [totalPages, setPages] = useState<number[]>([1]);
 
-  useEffect(() => {
-    if(activePage <= 0) {
-      setActivePage(1);
+  const clickPage = async (pageNumber: number) => {
+    if (pageNumber < 1) {
+      pageNumber = 1;
     }
-    if(activePage >= totalPages.length) {
-      setActivePage(totalPages.length);
+    if (pageNumber >= totalPages.length) {
+      pageNumber = totalPages.length;
     }
-  }, [activePage, totalPages.length, users]);
-
-  const clickPage = (pageNumber: number) => {
-    const skip =  (6 * pageNumber) -6;
     setActivePage(pageNumber);
-    setLoading(true);
-    setSkip(skip);
+    setLoading(true)
+    const skip =  (6 * pageNumber) -6;
+    const { getAllUsers } = await fetchAllUsers(6, skip);
+    setGetUsers(getAllUsers);
+    setLoading(false);
   };
 
+  const RenderButtons = () => {
+    if (!loading) {
+      return (
+        <>
+        <Button type="button" active={ false } onClick={ () => clickPage(1) }>{ '<<' }</Button>
+        <Button type="button" active={ false } onClick={ () => clickPage(activePage - 1) }>{ '<' } </Button>
+
+        {
+          totalPages.map((page: number, index: number) => (
+            <Button
+              key={ index }
+              type="button"
+              active={ activePage === page ? true : false }
+              onClick={ () => clickPage(page) }
+            >
+              { page }
+            </Button>
+          ))
+        }
+        <Button type="button" active={ false } onClick={ () => clickPage(activePage + 1) }>{ '>' } </Button>
+        <Button type="button" active={ false }onClick={ () => clickPage(totalPages.length) }>{ '>>' } </Button>
+      </>
+      )
+    }
+
+    return <></>
+  };
 
   useEffect(() => {
     const pages = Math.ceil((rowsTotal / 6));
@@ -50,46 +77,12 @@ const Pagination = () => {
       const pagesArray= []
       for (let pagesN = 1; pagesN <= pages; pagesN++) {
         pagesArray.push(pagesN);
-    }
+      }
       setPages(pagesArray);
     }
-  }, [users]);
+  }, []);
 
-  return (
-    <>
-    <Button type="button" active={ false } onClick={ () => clickPage(1) }>{ '<<' }</Button>
-    <Button type="button" active={ false } onClick={ () => setActivePage(activePage - 1) }>{ '<' } </Button>
-
-    {
-      totalPages.map((page: number, index: number) => (
-        (activePage === page) ?
-        <Button
-          key={ index }
-          type="button"
-          active={ true }
-          onClick={ () => clickPage(page) }
-        >
-          { page }
-        </Button>
-        : <Button
-            key={ index }
-            type="button"
-            active={ false }
-            onClick={ () => clickPage(page) }
-          >
-            { page }
-          </Button>
-      ))
-    }
-
-    {/* <Button type="button">1</Button>
-    <Button type="button">2</Button>
-    <Button type="button">3</Button> */}
-
-    <Button type="button" active={ false } onClick={ () => setActivePage(activePage + 1) }>{ '>' } </Button>
-    <Button type="button" active={ false }onClick={ () => setActivePage(totalPages.length) }>{ '>>' } </Button>
-    </>
-  );
+  return <RenderButtons />
 };
 
 export default Pagination;

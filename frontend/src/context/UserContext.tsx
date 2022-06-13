@@ -32,12 +32,12 @@ export function UserProvider({ children }: Props) {
     setTotalRows(totalRows);
     setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 2000);
   };
 
   useEffect(() => {
-    getUsers(6, skip);
-  }, [users]);
+    getUsers(6, 0);
+  }, []);
 
   return (
     <UserContext.Provider value={ {

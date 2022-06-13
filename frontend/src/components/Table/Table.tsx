@@ -17,6 +17,7 @@ import SearchUser from '../../../public/search-user.png';
 import Pagination from '../Pagination/Pagination';
 import { UserContext } from '../../context/UserContext';
 import { IUser } from '../../interfaces/interfaces';
+import Loading from '../Loading/Loagind';
 
 const BoxTable = styled.div`
   display: flex;
@@ -114,7 +115,7 @@ const TableUser = () => {
   const [isOpenDel, setIsOpenDel] = useState(false);
   const [isOpenUp, setIsOpenUp] = useState(false);
   const [userSelected, setSelectUser] = useState<IUser>({} as IUser);
-  const { users } = useContext(UserContext);
+  const { users, loading } = useContext(UserContext);
 
   const deleteUser = (user: IUser) => {
     setSelectUser(user);
@@ -125,6 +126,41 @@ const TableUser = () => {
     setSelectUser(user);
     setIsOpenUp(true);
   };
+
+  const RenderTable = () => {
+    if (!loading) {
+      if (users.length <= 0) {
+        return <p>Nenhum usuário cadastrado!</p>
+      } else {
+        return (
+          <Table variant='simple'>
+          <Thead>
+            <Tr>
+              <Th>#id</Th>
+              <Th>nome</Th>
+              <Th>email</Th>
+              <Th></Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            { users.map((user:  IUser, index: number) => (
+              <Tr key={ index }>
+                <Td><b>{ user.id_user }</b></Td>
+                <Td>{ user.name }</Td>
+                <Td>{ user.email }</Td>
+                <Td onClick={ () => deleteUser(user) }>excluir</Td>
+                <Td onClick={ () => updateUser(user) }>editar</Td>
+              </Tr> ))
+            }
+          </Tbody>
+          </Table>
+        );
+      }
+    }
+
+    return <Loading />
+  }
 
   return(
     <>
@@ -139,30 +175,7 @@ const TableUser = () => {
           <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
         </HeaderBoxTable>
         <TableContainer className="tableBody">
-          { users.length <= 0 ? ( <p>Nenhum usuário cadastrado!</p> ) :(
-            <Table variant='simple'>
-              <Thead>
-                <Tr>
-                  <Th>#id</Th>
-                  <Th>nome</Th>
-                  <Th>email</Th>
-                  <Th></Th>
-                  <Th></Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                { users.map((user:  IUser, index: number) => (
-                  <Tr key={ index }>
-                    <Td><b>{ user.id_user }</b></Td>
-                    <Td>{ user.name }</Td>
-                    <Td>{ user.email }</Td>
-                    <Td onClick={ () => deleteUser(user) }>excluir</Td>
-                    <Td onClick={ () => updateUser(user) }>editar</Td>
-                  </Tr> ))
-                }
-              </Tbody>
-            </Table>
-          )}
+          <RenderTable />
         </TableContainer>
         <FooterBoxTable>
           { users.length > 0 &&  <Pagination /> }

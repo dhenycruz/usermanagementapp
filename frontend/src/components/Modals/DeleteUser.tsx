@@ -20,13 +20,13 @@ type Props = {
 }
 
 const DeleteUser = ({isOpen, setIsOpen, user }: Props) => {
-  const { setLoading, setSkip } = useContext(UserContext);
+  const { setLoading, getUsers } = useContext(UserContext);
   const submitDelete = async (id: number): Promise <void> => {
     try {
       deleteUser(id);
       setIsOpen(false);
       setLoading(true);
-      setSkip(0);
+      getUsers(6,0);
     } catch (e) {
       console.log('houve algum erro!');
     }
