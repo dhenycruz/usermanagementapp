@@ -12,7 +12,7 @@ import {
   ModalBody,
   ModalFooter,
 } from './Modal';
-import { validateNumberName, validateCharacterName, validateNameLength } from './validateInputs';
+import { validateNumberName, validateCharacterName } from './validateInputs';
 
 const AlertBox = styled.div`
   background-color: #f4020252;
@@ -55,24 +55,6 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
     setError([]);
   }
 
- /*  const validateNumber = (value: string) => {
-    const validate: string[] = validateNumberName(value, error.messages);
-    if (validate.some((message) => message === 'Nome não pode haver números.')) {
-      setError({error: true, messages: validate });
-    } else {
-      setError({ error: false, messages: [] });
-    }
-  };
-
-  const validateCharacter = (value: string) => {
-    const validate: string[] = validateCharacterName(value, error.messages);
-    console.log(error.messages);
-    if (validate.some((message) => message === 'Nome não pode haver caracteres especiais.')) {
-      setError({error: true, messages: validate });
-    } else {
-      setError({ error: false, messages: [] });
-    }
-  }; */
 
   const validateName = (value: string) => {
     const validateN: string[] = validateNumberName(value, error);

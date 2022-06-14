@@ -37,19 +37,3 @@ export const validateCharacterName = (name: string, messagesArray: string[]): st
   }
   return messagesArray;
 };
-
-export const validateNameLength = (name: string, messagesArray: string[]): string[]  => {
-  if (name.length < 6) {
-    const filterExistsError = messagesArray.some((message) => message === 'Nome tem que ter no mínimo 6 caracteres.');
-    if (!filterExistsError) {
-      messagesArray.push('Nome tem que ter no mínimo 6 caracteres.');
-    }
-  } else {
-    const filterExistsError = messagesArray.some((message) => message === 'Nome tem que ter no mínimo 6 caracteres.');
-    if (filterExistsError) {
-      return messagesArray.filter((message) => message !== 'Nome tem que ter no mínimo 6 caracteres.')
-    }
-  }
-  return messagesArray;
-};
-
