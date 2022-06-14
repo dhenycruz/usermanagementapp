@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   ButtonCancel,
@@ -12,7 +12,7 @@ import {
   ModalBody,
   ModalFooter,
 } from './Modal';
-import { validateName } from './validateInputs';
+import { validateNumberName, validateCharacterName, validateNameLength } from './validateInputs';
 
 const AlertBox = styled.div`
   background-color: #f4020252;
@@ -44,47 +44,65 @@ interface Event {
   }
 }
 
-interface Error {
-  error: boolean,
-  messages: string[],
-}
-
 const CreateUser = ({ isOpen, setIsOpen }: Props) => {
   const [valueName, setName] = useState('');
   const [buttonDisabled, setButtonDisabled] = useState(true);
-  const [error, setError] = useState<Error>({ error: false, messages: [] });
+  const [error, setError] = useState<string[]>([]);
 
   const cancelORClose = () => {
     setName('');
     setIsOpen(false);
-    setError({ error: false, messages: []});
+    setError([]);
   }
+
+ /*  const validateNumber = (value: string) => {
+    const validate: string[] = validateNumberName(value, error.messages);
+    if (validate.some((message) => message === 'Nome não pode haver números.')) {
+      setError({error: true, messages: validate });
+    } else {
+      setError({ error: false, messages: [] });
+    }
+  };
+
+  const validateCharacter = (value: string) => {
+    const validate: string[] = validateCharacterName(value, error.messages);
+    console.log(error.messages);
+    if (validate.some((message) => message === 'Nome não pode haver caracteres especiais.')) {
+      setError({error: true, messages: validate });
+    } else {
+      setError({ error: false, messages: [] });
+    }
+  }; */
+
+  const validateName = (value: string) => {
+    const validateN: string[] = validateNumberName(value, error);
+    const validateC: string[] = validateCharacterName(value, validateN);
+    setError(validateC);
+  };
+
 
   const handleChange = ({ target: { name, value} }: Event ) => {
     if (name === 'name') {
-      console.log(value);
+      validateName(value);
+      if (value.length >= 6) {
+        setError((prev) => prev.filter((message) => message !== 'Nome tem que ter no mínimo 6 caracteres.'));
+      }
       setName(value);
     }
   };
 
   const validateInput = ({ target: { name, value} }: Event) => {
     if (name === 'name') {
-      const validate = validateName(value);
-      if (validate !== true) {
-        const newArrayError: string[] = error.messages;
-        const filterExistsError = newArrayError.some((erro) => erro === validate.error);
+      if (value.length < 6) {
+        const filterExistsError = error.some((message) => message === 'Nome tem que ter no mínimo 6 caracteres.');
         if (!filterExistsError) {
-          newArrayError.push(validate.error);
-          console.log(newArrayError);
-          setError({ error: true, messages: newArrayError});
+          setError((_prev) => ['Nome tem que ter no mínimo 6 caracteres.']);
         }
       } else {
-        console.log('validate true')
-        setError({ error: false, messages: []});
+        setError((prev) => prev.filter((message) => message !== 'Nome tem que ter no mínimo 6 caracteres.'));
       }
     }
   }
-
   return (
     <Modal open={ isOpen }>
       <ModalContainer>
@@ -105,15 +123,15 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
               Password:
               <Input type="password" name="password"/>
             </Label>
-            { error.error && (
+            { error.length > 0 &&
               <AlertBox>
-                { error.messages.map((erro, index) => (
+                { error.map((erro, index) => (
                   <div key={ index} className="alert-items">
                     * { erro }
                   </div>
                 )) }
               </AlertBox>
-            )}
+            }
         </ModalBody>
         <ModalFooter>
           <div>
