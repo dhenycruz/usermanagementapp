@@ -13,8 +13,14 @@ interface GetAllUsers {
   getAllUsers: UserReturn[],
 }
 
+interface BodyCreate {
+  name: string,
+  email: string,
+  password: string,
+}
+
 class UserModel {
-  async create(body: User): Promise <UserReturn | null> {
+  async create(body: BodyCreate): Promise <UserReturn | null> {
     return prisma.users.create({
       data: body,
       select: {
