@@ -23,7 +23,7 @@ const DeleteUser = ({isOpen, setIsOpen, user }: Props) => {
   const { setLoading, getUsers } = useContext(UserContext);
   const submitDelete = async (id: number): Promise <void> => {
     try {
-      deleteUser(id);
+      await deleteUser(id);
       setIsOpen(false);
       setLoading(true);
       getUsers(6,0);

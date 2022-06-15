@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 import styled from 'styled-components';
 import {
   ButtonCancel,
@@ -13,6 +14,7 @@ import {
   ModalFooter,
 } from './Modal';
 import { validateNumberName, validateCharacterName, validateEmail } from './validateInputs';
+import { createUser } from '../../services/api-backend';
 
 const AlertBox = styled.div`
   background-color: #f4020252;
@@ -36,6 +38,7 @@ interface Event {
 }
 
 const CreateUser = ({ isOpen, setIsOpen }: Props) => {
+  const { getUsers, setLoading } = useContext(UserContext);
   const [valueName, setName] = useState('');
   const [valueEmail, setEmail] = useState('');
   const [valuePassword, setPassword] = useState('');
@@ -202,6 +205,18 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
     }
   }, [valueName, valueEmail, valuePassword]);
 
+  const submitCreateUser = async () => {
+    try {
+      await createUser({ name: valueName, email: valueEmail, password: valuePassword });
+      setIsOpen(false);
+      setLoading(true);
+      cancelORClose();
+      getUsers(6,0);
+    } catch (e) {
+      console.log('Algo deu errado!');
+    }
+  }
+
   return (
     <Modal open={ isOpen }>
       <ModalContainer>
@@ -235,7 +250,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
         <ModalFooter>
           <div>
           <ButtonCancel type="button" onClick={ () => cancelORClose() }>Cancelar</ButtonCancel>
-          <ButtonConfirm type="button" disabled={ buttonDisabled }>Salvar</ButtonConfirm>
+          <ButtonConfirm type="button" disabled={ buttonDisabled } onClick={ () => submitCreateUser() }>Salvar</ButtonConfirm>
           </div>
         </ModalFooter>
       </ModalContainer>

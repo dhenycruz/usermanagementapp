@@ -80,7 +80,7 @@ const Pagination = () => {
       }
       setPages(pagesArray);
     }
-  }, []);
+  }, [rowsTotal]);
 
   return <RenderButtons />
 };
