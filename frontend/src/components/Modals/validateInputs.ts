@@ -37,3 +37,19 @@ export const validateCharacterName = (name: string, messagesArray: string[]): st
   }
   return messagesArray;
 };
+
+export const validateEmail = (email: string, messagesArray: string[]) => {
+  const verifyEmail = /\S+@\S+\.\S+/;
+  if (!verifyEmail.test(email)) {
+    const filterExistsError = messagesArray.some((message) => message === 'Email com formato inválido.');
+    if (!filterExistsError) {
+      messagesArray.push('Email com formato inválido.');
+    }
+  } else {
+    const filterExistsError = messagesArray.some((message) => message === 'Email com formato inválido.');
+    if (filterExistsError) {
+      return messagesArray.filter((message) => message !== 'Email com formato inválido.')
+    }
+  }
+  return messagesArray;
+};
