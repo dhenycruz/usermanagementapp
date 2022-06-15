@@ -184,7 +184,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
 
   useEffect(() => {
     const verifyName = () => {
-      if (/[0-9]/.test(valueName)) return false;
+      if (/d/.test(valueName)) return false;
       if (/\W|_/.test(valueName.replace(/ /g, ""))) return false;
       if (valueName.length < 5) return false;
       return true;

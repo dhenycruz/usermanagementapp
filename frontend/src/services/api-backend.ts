@@ -21,6 +21,14 @@ interface UserBody {
   password: string;
 }
 
+interface UserBodyUpdate {
+  name: string;
+  email: string;
+}
+
+interface GetUserBYID extends User {
+  password: string;
+}
 export const fetchAllUsers = async(take: number, skip:number): Promise<Users> => {
   const users = await axios.get(`${BASE_URL}/users/?take=${take}&skip=${skip}`);
   return users.data;
@@ -46,13 +54,12 @@ export const createUser = async (body: UserBody): Promise <User> => {
   return newUser.data;
 };
 
-export const updateUser = async (body: UserBody, id: number): Promise<User> => {
+export const updateUser = async (body: UserBodyUpdate, id: number): Promise<User> => {
   const upUser = await axios({
     method: 'put',
     url: `${BASE_URL}/users/${id}`,
     data: body
   });
-
   return upUser.data;
 };
 

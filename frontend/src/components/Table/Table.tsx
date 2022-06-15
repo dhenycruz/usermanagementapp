@@ -48,6 +48,16 @@ const BoxTable = styled.div`
     width: 100%;
     height: 65%;
   }
+
+  .delete-user:hover {
+    color: red;
+    font-weight: 700;
+  }
+
+  .update-user:hover {
+    color: green;
+    font-weight: 700;
+  }
 `;
 
 const HeaderBoxTable = styled.div`
@@ -118,12 +128,12 @@ const TableUser = () => {
   const { users, loading } = useContext(UserContext);
 
   const deleteUser = (user: IUser) => {
-    setSelectUser(user);
+    setSelectUser(() => user);
     setIsOpenDel(true);
   };
 
   const updateUser = (user: IUser) => {
-    setSelectUser(user);
+    setSelectUser(() => user);
     setIsOpenUp(true);
   };
 
@@ -149,8 +159,8 @@ const TableUser = () => {
                 <Td><b>{ user.id_user }</b></Td>
                 <Td>{ user.name }</Td>
                 <Td>{ user.email }</Td>
-                <Td onClick={ () => deleteUser(user) }>excluir</Td>
-                <Td onClick={ () => updateUser(user) }>editar</Td>
+                <Td className="delete-user" onClick={ () => deleteUser(user) }>excluir</Td>
+                <Td className="update-user" onClick={ () => updateUser(user) }>editar</Td>
               </Tr> ))
             }
           </Tbody>
@@ -180,10 +190,14 @@ const TableUser = () => {
         <FooterBoxTable>
           { users.length > 0 &&  <Pagination /> }
         </FooterBoxTable>
+        <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
+        { userSelected.name && (
+          <>
+            <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } user={ userSelected } />
+            <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } user={ userSelected } setSelectUser={ setSelectUser } />
+          </>
+        )}
       </BoxTable>
-      <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } user={ userSelected } />
-      <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
-      <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } />
     </>
   );
 };
