@@ -21,17 +21,8 @@ const AlertBox = styled.div`
   flex-direction: column;
   font-size: 12px;
   padding: 10px 0 10px 10px;
-
-  /* .alert-items {
-    align-items: center;
-    
-    
-    display:flex;
-    float: left;
-    
-    width: 100%;
-  } */
 `;
+
 type Props = {
   isOpen: boolean;
   setIsOpen: Function;
@@ -93,7 +84,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
         if (error.length > 0) {
           if (!error.some((message) => message === 'A senha não pode conter espaços em branco.')) {
             error.push('A senha não pode conter espaços em branco.');
-            setError((prev) => error);
+            setError(() => error);
             setOnLoad(!onLoad);
           }
         } else {
@@ -116,7 +107,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       if (error.length > 0) {
         if (!error.some((message) => message === 'Nome não pode ser vazio!')) {
           error.push('Nome não pode ser vazio!');
-          setError((prev) => error);
+          setError(() => error);
           setOnLoad(!onLoad);
         }
       } else {
@@ -130,7 +121,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       if (error.length > 0) {
         if (!error.some((message) => message === 'Nome tem que ter no mínimo 5 caracteres.')) {
           error.push('Nome tem que ter no mínimo 5 caracteres.');
-          setError((prev) => error);
+          setError(() => error);
           // setError nao tava renderizando de novo, então criei um state só para redenrizar os erros novamente.
           setOnLoad(!onLoad);
         }
@@ -147,13 +138,12 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       if (error.length > 0) {
         if (!error.some((message) => message === 'Email não pode ser vazio!')) {
           error.push('Email não pode ser vazio!');
-          setError((prev) => error);
+          setError(() => error);
           setOnLoad(!onLoad);
         }
       } else {
         setError(['Email não pode ser vazio!']);
       }
-      return;
     } else {
       const validate = validateEmail(value, error);
       setError(validate.filter((message) => message !== 'Email não pode ser vazio!'));
@@ -166,7 +156,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       if (error.length > 0) {
         if (!error.some((message) => message === 'A senha não pode ser vazia!')) {
           error.push('A senha não pode ser vazia!');
-          setError((prev) => error);
+          setError(() => error);
           setOnLoad(!onLoad);
         }
       } else {
@@ -180,7 +170,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       if (error.length > 0) {
         if (!error.some((message) => message === 'A senha tem que ter no mínimo 6 caracteres.')) {
           error.push('A senha tem que ter no mínimo 6 caracteres.');
-          setError((prev) => error.filter((message) => message !== 'A senha não pode ser vazia!'));
+          setError(() => error.filter((message) => message !== 'A senha não pode ser vazia!'));
           setOnLoad(!onLoad);
         }
       } else {
@@ -188,6 +178,29 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       }
     }
   };
+
+  useEffect(() => {
+    const verifyName = () => {
+      if (/[0-9]/.test(valueName)) return false;
+      if (/\W|_/.test(valueName.replace(/ /g, ""))) return false;
+      if (valueName.length < 5) return false;
+      return true;
+    };
+    const verifyEmail = () => {
+      if (!/\S+@\S+\.\S+/.test(valueEmail)) return false;
+      return true; 
+    };
+    const verifyPassword = () => {
+      if (valuePassword.length < 6) return false;
+      return true;
+    }
+
+    if (verifyName() && verifyEmail() && verifyPassword()) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [valueName, valueEmail, valuePassword]);
 
   return (
     <Modal open={ isOpen }>
