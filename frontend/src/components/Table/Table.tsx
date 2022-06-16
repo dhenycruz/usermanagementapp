@@ -27,7 +27,7 @@ const BoxTable = styled.div`
   align-items: center;
   height: 100%;
 
-  p {
+  .user-not-found {
     font-size: 32px;
     margin-top: 30px;
     text-align: center;
@@ -170,7 +170,7 @@ const TableUser = () => {
   const RenderTable = () => {
     if (!loading) {
       if (users.length <= 0) {
-        return <p>Nenhum usuário encontrado!</p>
+        return <p className="user-not-found">Nenhum usuário encontrado!</p>
       } else {
         return (
           <Table variant='simple'>
