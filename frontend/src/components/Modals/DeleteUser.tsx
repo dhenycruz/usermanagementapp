@@ -20,13 +20,14 @@ type Props = {
 }
 
 const DeleteUser = ({isOpen, setIsOpen, user }: Props) => {
-  const { setLoading, getUsers } = useContext(UserContext);
+  const { setLoading, getUsers, openAlert } = useContext(UserContext);
   const submitDelete = async (id: number): Promise <void> => {
     try {
       await deleteUser(id);
       setIsOpen(false);
       setLoading(true);
       getUsers(6,0);
+      openAlert('Usuário deletado com sucesso!');
     } catch (e) {
       console.log('houve algum erro!');
     }

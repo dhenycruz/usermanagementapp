@@ -4,6 +4,11 @@ import {
 import { IUser } from '../interfaces/interfaces';
 import { fetchAllUsers } from '../services/api-backend';
 
+interface IAlert {
+  alert: boolean,
+  message: string,
+}
+
 interface IUserContext {
   users: IUser[],
   setGetUsers(param: IUser[]): void,
@@ -12,8 +17,8 @@ interface IUserContext {
   setLoading(param: boolean): void,
   rowsTotal: number,
   setTotalRows(param: number): void,
-  skip: number,
-  setSkip(param: number): void,
+  alert: IAlert,
+  openAlert(param: string): void,
 }
 
 export const UserContext = createContext<IUserContext>({} as IUserContext);
@@ -24,7 +29,7 @@ export function UserProvider({ children }: Props) {
   const [users, setGetUsers] = useState<IUser[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [rowsTotal, setTotalRows] = useState<number>(0);
-  const [skip, setSkip] = useState<number>(0);
+  const [alert, setAlert] = useState<IAlert>({ alert: false, message: '' });
 
   const getUsers = async (take: number, paramSkip: number): Promise<void> => {
     const { totalRows, getAllUsers} = await fetchAllUsers(take, paramSkip);
@@ -32,8 +37,15 @@ export function UserProvider({ children }: Props) {
     setTotalRows(totalRows);
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   };
+
+  const openAlert = (text: string) => {
+    setAlert({ alert: true, message: text });
+    setTimeout(() => {
+      setAlert({ alert: false, message: text });
+    }, 11000);
+  }
 
   useEffect(() => {
     getUsers(6, 0);
@@ -48,8 +60,8 @@ export function UserProvider({ children }: Props) {
       setLoading,
       rowsTotal,
       setTotalRows,
-      skip,
-      setSkip,
+      alert,
+      openAlert,
     }}>
       { children }
     </UserContext.Provider>

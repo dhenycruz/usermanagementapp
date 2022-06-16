@@ -1,5 +1,7 @@
 import { useState, useContext } from 'react';
 import {
+  Alert,
+  AlertIcon,
   Table,
   Thead,
   Tbody,
@@ -20,12 +22,51 @@ import { IUser } from '../../interfaces/interfaces';
 import Loading from '../Loading/Loagind';
 import { getUserByQuery } from '../../services/api-backend';
 
-const BoxTable = styled.div`
+const BoxTable = styled.div<{ alert: Boolean }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
   height: 100%;
+
+  .chakra-alert  {
+    position: fixed;
+    visibility: hidden;
+    width: 30%;
+    bottom: 50%;
+    right: 20%;
+    border-radius: 10px;
+  
+    ${({ alert }) => alert && (
+      `visibility: visible;
+      animation: fadeIn 10s;
+      -webkit-animation: fadeIn 10s;
+      -moz-animation: fadeIn 10s;
+      -o-animation: fadeIn 10s;`
+    )}
+  }
+
+  @keyframes fadeIn {
+    0% { 
+      opacity: 0; 
+      right: -100%;
+    }
+
+    40% {
+      opacity: 1;
+      right: 20%;
+    }
+
+    60% {
+      opacity: 1;
+      right: 20%;
+    }
+
+    100% {
+      opacity: 0; 
+      right: -100%;
+    }
+  }
 
   .user-not-found {
     font-size: 32px;
@@ -141,7 +182,15 @@ const TableUser = () => {
   const [isOpenUp, setIsOpenUp] = useState(false);
   const [searchUser, setSearchUser] = useState('');
   const [userSelected, setSelectUser] = useState<IUser>({} as IUser);
-  const { users, loading, getUsers, setGetUsers, setLoading, setTotalRows } = useContext(UserContext);
+  const {
+    users,
+    loading,
+    getUsers,
+    setGetUsers,
+    setLoading,
+    setTotalRows,
+    alert,
+  } = useContext(UserContext);
 
   const deleteUser = (user: IUser) => {
     setSelectUser(() => user);
@@ -173,28 +222,36 @@ const TableUser = () => {
         return <p className="user-not-found">Nenhum usuário encontrado!</p>
       } else {
         return (
-          <Table variant='simple'>
-          <Thead>
-            <Tr>
-              <Th>#id</Th>
-              <Th>nome</Th>
-              <Th>email</Th>
-              <Th></Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            { users.map((user:  IUser, index: number) => (
-              <Tr key={ index }>
-                <Td><b>{ user.id_user }</b></Td>
-                <Td>{ user.name }</Td>
-                <Td>{ user.email }</Td>
-                <Td className="delete-user" onClick={ () => deleteUser(user) }>excluir</Td>
-                <Td className="update-user" onClick={ () => updateUser(user) }>editar</Td>
-              </Tr> ))
+          <>
+            <Table variant='simple'>
+            <Thead>
+              <Tr>
+                <Th>#id</Th>
+                <Th>nome</Th>
+                <Th>email</Th>
+                <Th></Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              { users.map((user:  IUser, index: number) => (
+                <Tr key={ index }>
+                  <Td><b>{ user.id_user }</b></Td>
+                  <Td>{ user.name }</Td>
+                  <Td>{ user.email }</Td>
+                  <Td className="delete-user" onClick={ () => deleteUser(user) }>excluir</Td>
+                  <Td className="update-user" onClick={ () => updateUser(user) }>editar</Td>
+                </Tr> ))
+              }
+            </Tbody>
+            </Table>
+            { alert.alert &&
+              <Alert status='success' variant='solid'>
+                <AlertIcon />
+                { alert.message }
+              </Alert>
             }
-          </Tbody>
-          </Table>
+          </>
         );
       }
     }
@@ -204,7 +261,7 @@ const TableUser = () => {
 
   return(
     <>
-      <BoxTable>
+      <BoxTable alert={ alert.alert }>
         <HeaderBoxTable>
           <h2>Lista de usuários</h2>
           <InputSearch>

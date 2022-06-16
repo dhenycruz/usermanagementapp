@@ -38,7 +38,7 @@ interface Event {
 }
 
 const CreateUser = ({ isOpen, setIsOpen }: Props) => {
-  const { getUsers, setLoading } = useContext(UserContext);
+  const { getUsers, setLoading, openAlert } = useContext(UserContext);
   const [valueName, setName] = useState('');
   const [valueEmail, setEmail] = useState('');
   const [valuePassword, setPassword] = useState('');
@@ -82,7 +82,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       setEmail(value);
     }
     if (name === 'password') {
-      const lastLetter = value.substr(-1);
+      const lastLetter = value.substring(-1);
       if (lastLetter === ' ') {
         if (error.length > 0) {
           if (!error.some((message) => message === 'A senha não pode conter espaços em branco.')) {
@@ -184,9 +184,18 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
 
   useEffect(() => {
     const verifyName = () => {
-      if (/d/.test(valueName)) return false;
-      if (/\W|_/.test(valueName.replace(/ /g, ""))) return false;
-      if (valueName.length < 5) return false;
+      if (/\d/.test(valueName)){
+        console.log('tem numero')
+        return false;
+      }
+      if (/\W|_/.test(valueName.replace(/ /g, ""))){
+        console.log('tem caractere especial');
+        return false;
+      } 
+      if (valueName.length < 5) {
+        console.log('tem menos que 5 caractere');
+        return false;
+      }
       return true;
     };
     const verifyEmail = () => {
@@ -212,6 +221,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       setLoading(true);
       cancelORClose();
       getUsers(6,0);
+      openAlert('Usuário cadastrado com sucesso!');
     } catch (e) {
       console.log('Algo deu errado!');
     }
