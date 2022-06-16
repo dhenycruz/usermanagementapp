@@ -40,7 +40,7 @@ export const getUser = async (id: number): Promise<User> => {
 };
 
 export const getUserByQuery = async (take: number,skip: number, query: string): Promise<Users>  => {
-  const users = await axios.get(`${BASE_URL}/search/?take=${take}&skyp=${skip}&query=${query}`);
+  const users = await axios.get(`${BASE_URL}/search/?take=${take}&skip=${skip}&query=${query}`);
   return users.data;
 };
 
