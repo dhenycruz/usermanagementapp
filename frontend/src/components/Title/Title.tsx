@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+const callBackAtive = ({ active }: any) => !active && `
+  animation: fadeOut 2s;
+  -webkit-animation: fadeOut 2s;
+  -moz-animation: fadeOut 2s;
+  -o-animation: fadeOut 2s;
+  display: none;
+`;
+
 const TitleH1 = styled.h1<{ active: Boolean }>`
   animation: fadeIn 2s;
   font-size: 18px;
@@ -14,6 +22,7 @@ const TitleH1 = styled.h1<{ active: Boolean }>`
     -webkit-animation: fadeOut 2s;
     -moz-animation: fadeOut 2s;
     -o-animation: fadeOut 2s;
+    display: none;
   `}
 
   @keyframes fadeIn {
@@ -33,12 +42,7 @@ const TitleFadeIN = styled.h1<{ active: Boolean }>`
   -moz-animation: fadeIn 2s;
   -o-animation: fadeIn 2s;
 
-  ${({ active }) => !active && `
-    animation: fadeOut 2s;
-    -webkit-animation: fadeOut 2s;
-    -moz-animation: fadeOut 2s;
-    -o-animation: fadeOut 2s;
-  `}
+  ${callBackAtive}
 
   @keyframes fadeIn {
     0% { opacity: 0; }
@@ -51,20 +55,20 @@ const TitleFadeIN = styled.h1<{ active: Boolean }>`
   }
 `;
 
-const TitleWelcome = () => {
+const TitleWelcome: React.FC = () => {
   const [fade, setFade] = useState(true);
 
   useEffect(() => {
-    setTimeout(function(){
-      setFade(false)
-    },4000);
+    setTimeout(() => {
+      setFade(false);
+    }, 4000);
   }, []);
-  return(
+  return (
     <>
-      <TitleH1 active={ fade }>SEJA BEM VINDO!</TitleH1>
-      <TitleFadeIN active={ fade }>Ao seu gerenciador de usuários.</TitleFadeIN>
+      <TitleH1 active={fade}>SEJA BEM VINDO!</TitleH1>
+      <TitleFadeIN active={fade}>Ao seu gerenciador de usuários.</TitleFadeIN>
     </>
-  )
+  );
 }
 
 export default TitleWelcome;

@@ -2,7 +2,7 @@ import Box from '../components/MainBox/MainBox';
 import NavBar from '../components/Nav/Nav';
 import Table from '../components/Table/Table';
 
-const Dashboard = (): JSX.Element => (
+const Dashboard = (): JSX.Element =>(
   <>
     <NavBar />
     <main>

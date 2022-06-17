@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
+  Alert,
+  AlertIcon,
   Table,
   Thead,
   Tbody,
@@ -15,12 +17,62 @@ import UpdateUser from '../Modals/UpdateUser';
 import Image from 'next/image';
 import SearchUser from '../../../public/search-user.png';
 import Pagination from '../Pagination/Pagination';
+import { UserContext } from '../../context/UserContext';
+import { IUser } from '../../interfaces/interfaces';
+import Loading from '../Loading/Loagind';
+import { getUserByQuery } from '../../services/api-backend';
 
-const BoxTable = styled.div`
+const BoxTable = styled.div<{ alert: Boolean }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
+  height: 100%;
+
+  .chakra-alert  {
+    position: fixed;
+    visibility: hidden;
+    width: 30%;
+    bottom: 30%;
+    right: 20%;
+    border-radius: 10px;
+  
+    ${({ alert }) => alert && (
+      `visibility: visible;
+      animation: fadeIn 10s;
+      -webkit-animation: fadeIn 10s;
+      -moz-animation: fadeIn 10s;
+      -o-animation: fadeIn 10s;`
+    )}
+  }
+
+  @keyframes fadeIn {
+    0% { 
+      opacity: 0; 
+      right: -100%;
+    }
+
+    40% {
+      opacity: 1;
+      right: 20%;
+    }
+
+    60% {
+      opacity: 1;
+      right: 20%;
+    }
+
+    100% {
+      opacity: 0; 
+      right: -100%;
+    }
+  }
+
+  .user-not-found {
+    font-size: 24px;
+    margin-top: 30px;
+    text-align: center;
+  }
 
   tbody tr:hover {
     background-color: #5f00db39;
@@ -36,6 +88,23 @@ const BoxTable = styled.div`
 
   img:hover {
     cursor: pointer;
+  }
+
+  .tableBody {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 65%;
+  }
+
+  .delete-user:hover {
+    color: red;
+    font-weight: 700;
+  }
+
+  .update-user:hover {
+    color: green;
+    font-weight: 700;
   }
 `;
 
@@ -65,6 +134,8 @@ const HeaderBoxTable = styled.div`
 
 const FooterBoxTable = styled.div`
   display: flex;
+  width: 100%;
+  justify-content:center;
   margin-top: 40px;
 `;
 
@@ -97,42 +168,62 @@ const InputSearch = styled.div`
   }
 `;
 
+
+interface Event {
+  target: {
+    name: string,
+    value: string,
+  }
+}
+
 const TableUser = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenDel, setIsOpenDel] = useState(false);
   const [isOpenUp, setIsOpenUp] = useState(false);
-  const [userSelected, setSelectUser] = useState({});
-  const users = [1,2,3,4,5,6]
-  const userExem = {
-    id_user: 1,
-    name: 'Dheniarley',
-    email: 'dheniarley@email.com',
-  }
+  const [searchUser, setSearchUser] = useState('');
+  const [userSelected, setSelectUser] = useState<IUser>({} as IUser);
+  const {
+    users,
+    loading,
+    getUsers,
+    setGetUsers,
+    setLoading,
+    setTotalRows,
+    alert,
+  } = useContext(UserContext);
 
-  const deleteUser = (user:object) => {
-    setSelectUser(user);
+  const deleteUser = (user: IUser) => {
+    setSelectUser(() => user);
     setIsOpenDel(true);
   };
 
-  const updateUser = (user: object) => {
-    setSelectUser(user);
+  const updateUser = (user: IUser) => {
+    setSelectUser(() => user);
     setIsOpenUp(true);
   };
 
-  return(
-    <>
-      <BoxTable>
-        <HeaderBoxTable>
-          <h2>Lista de usuários</h2>
-          <InputSearch>
-            <input placeholder="Pesquisar por usuários"/>
-            {/* https://icons8.com.br/icons/set/search--purple */}
-            <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
-          </InputSearch>
-          <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
-        </HeaderBoxTable>
-        <TableContainer>
-          <Table variant='simple'>
+  const handleChange = async ({ target: { value } }: Event) => {
+    if (value === '') {
+      setSearchUser(value);
+      setLoading(true);
+      getUsers(6, 0);
+      return;
+    }
+    const { totalRows, getAllUsers } = await getUserByQuery(6, 0, value);
+    console.log(getAllUsers);
+    setSearchUser(value);
+    setGetUsers(getAllUsers);
+    setTotalRows(totalRows);
+  };
+
+  const RenderTable = () => {
+    if (!loading) {
+      if (users.length <= 0) {
+        return <p className="user-not-found">Nenhum usuário encontrado!</p>
+      } else {
+        return (
+          <>
+            <Table variant='simple'>
             <Thead>
               <Tr>
                 <Th>#id</Th>
@@ -143,25 +234,56 @@ const TableUser = () => {
               </Tr>
             </Thead>
             <Tbody>
-              { users.map((_user, index) => (
+              { users.map((user:  IUser, index: number) => (
                 <Tr key={ index }>
-                  <Td><b>{ index + 1 }</b></Td>
-                  <Td>Dheniarley Cruz</Td>
-                  <Td>dheniarley@email.com</Td>
-                  <Td onClick={ () => deleteUser(userExem) }>excluir</Td>
-                  <Td onClick={ () => updateUser(userExem) }>editar</Td>
+                  <Td><b>{ user.id_user }</b></Td>
+                  <Td>{ user.name }</Td>
+                  <Td>{ user.email }</Td>
+                  <Td className="delete-user" onClick={ () => deleteUser(user) }>excluir</Td>
+                  <Td className="update-user" onClick={ () => updateUser(user) }>editar</Td>
                 </Tr> ))
               }
             </Tbody>
-          </Table>
+            </Table>
+          </>
+        );
+      }
+    }
+
+    return <Loading />
+  }
+
+  return(
+    <>
+      <BoxTable alert={ alert.alert }>
+        <HeaderBoxTable>
+          <h2>Lista de usuários</h2>
+          <InputSearch>
+            <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
+            {/* https://icons8.com.br/icons/set/search--purple */}
+            <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
+          </InputSearch>
+          <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
+        </HeaderBoxTable>
+        <TableContainer className="tableBody">
+          <RenderTable />
         </TableContainer>
         <FooterBoxTable>
-          <Pagination />
+          { users.length > 0 &&  <Pagination /> }
         </FooterBoxTable>
+        <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
+        { userSelected.name && (
+          <>
+            <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } user={ userSelected } />
+            <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } user={ userSelected } setSelectUser={ setSelectUser } />
+          </>
+        )}
+        { alert.alert &&
+              <Alert status='success' variant='solid'>
+                <AlertIcon />
+                { alert.message }
+              </Alert> }
       </BoxTable>
-      <DeleteUser isOpen={ isOpenDel } setIsOpen={ setIsOpenDel } />
-      <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
-      <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } />
     </>
   );
 };

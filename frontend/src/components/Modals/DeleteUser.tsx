@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 import {
   ButtonCancel,
   ButtonClose,
@@ -8,13 +10,29 @@ import {
   ModalBody,
   ModalFooter,
 } from './Modal';
+import { IUser} from '../../interfaces/interfaces';
+import { deleteUser } from '../../services/api-backend';
 
 type Props = {
-  isOpen: boolean;
-  setIsOpen: Function;
+  isOpen: boolean,
+  setIsOpen: Function,
+  user: IUser,
 }
 
-const DeleteUser = ({isOpen, setIsOpen, }: Props) => {
+const DeleteUser = ({isOpen, setIsOpen, user }: Props) => {
+  const { setLoading, getUsers, openAlert } = useContext(UserContext);
+  const submitDelete = async (id: number): Promise <void> => {
+    try {
+      await deleteUser(id);
+      setIsOpen(false);
+      setLoading(true);
+      getUsers(6,0);
+      openAlert('Usuário deletado com sucesso!');
+    } catch (e) {
+      console.log('houve algum erro!');
+    }
+  };
+
   return (
     <Modal open={ isOpen }>
       <ModalContainer>
@@ -23,12 +41,12 @@ const DeleteUser = ({isOpen, setIsOpen, }: Props) => {
           <ButtonClose type="button" onClick={ () => setIsOpen(false) } className="buttonClose">x</ButtonClose>
         </ModalHeader>
         <ModalBody>
-            <p> Realmente deseja deletar esse usuário?</p>
+            <p> Realmente deseja deletar <strong>{ user.name }</strong>?</p>
         </ModalBody>
         <ModalFooter>
           <div>
           <ButtonCancel type="button" onClick={ () => setIsOpen(false) }>NÃO</ButtonCancel>
-          <ButtonConfirm>SIM</ButtonConfirm>
+          <ButtonConfirm onClick={ () => submitDelete(user.id_user) }>SIM</ButtonConfirm>
           </div>
         </ModalFooter>
       </ModalContainer>

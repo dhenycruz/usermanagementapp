@@ -86,6 +86,11 @@ export const ButtonConfirm = styled.button`
     background-color: rgba(69, 0, 147, .8); 
   }
 
+  &:disabled {
+    background-color: #5b485c;
+    border: 1px solid grey;
+  }
+
 `;
 
 export const ButtonCancel = styled.button`
