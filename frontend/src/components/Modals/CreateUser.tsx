@@ -82,7 +82,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       setEmail(value);
     }
     if (name === 'password') {
-      const lastLetter = value.substring(-1);
+      const lastLetter = value.slice(-1);
       if (lastLetter === ' ') {
         if (error.length > 0) {
           if (!error.some((message) => message === 'A senha não pode conter espaços em branco.')) {

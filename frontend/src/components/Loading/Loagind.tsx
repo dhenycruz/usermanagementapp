@@ -3,6 +3,7 @@ import { Spinner } from '@chakra-ui/react';
 
 const LoadingBox = styled.div`
   display: flex;
+  flex-direaction: column;
   justify-content:center;
   align-items:center;
   height:100%;
@@ -17,6 +18,7 @@ const Loading = () => (
       color='#6600cc;'
       size='xl'
     />
+    <p>Carregando...</p>
   </LoadingBox>
 );
 export default Loading;

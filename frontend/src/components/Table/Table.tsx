@@ -33,7 +33,7 @@ const BoxTable = styled.div<{ alert: Boolean }>`
     position: fixed;
     visibility: hidden;
     width: 30%;
-    bottom: 50%;
+    bottom: 30%;
     right: 20%;
     border-radius: 10px;
   
@@ -69,7 +69,7 @@ const BoxTable = styled.div<{ alert: Boolean }>`
   }
 
   .user-not-found {
-    font-size: 32px;
+    font-size: 24px;
     margin-top: 30px;
     text-align: center;
   }
@@ -245,12 +245,6 @@ const TableUser = () => {
               }
             </Tbody>
             </Table>
-            { alert.alert &&
-              <Alert status='success' variant='solid'>
-                <AlertIcon />
-                { alert.message }
-              </Alert>
-            }
           </>
         );
       }
@@ -284,6 +278,11 @@ const TableUser = () => {
             <UpdateUser isOpen={ isOpenUp } setIsOpen={ setIsOpenUp } user={ userSelected } setSelectUser={ setSelectUser } />
           </>
         )}
+        { alert.alert &&
+              <Alert status='success' variant='solid'>
+                <AlertIcon />
+                { alert.message }
+              </Alert> }
       </BoxTable>
     </>
   );

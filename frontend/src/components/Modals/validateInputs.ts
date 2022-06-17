@@ -5,7 +5,7 @@ interface ReturnValidateName {
 export const validateNumberName = (name:string, messagesArray: string[]): string[] => {
   // Validate if there is a number in the name
   // reference : https://backefront.com.br/como-saber-se-a-string-contem-numero/
-  const verifyNumber = /[0-9]/;
+  const verifyNumber = /\d/;
   if (verifyNumber.test(name)) {
     const filterExistsError = messagesArray.some((message) => message === 'Nome não pode haver números.');
     if (!filterExistsError) {
