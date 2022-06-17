@@ -3,7 +3,7 @@ import { Spinner } from '@chakra-ui/react';
 
 const LoadingBox = styled.div`
   display: flex;
-  flex-direaction: column;
+  flex-direction: column;
   justify-content:center;
   align-items:center;
   height:100%;
