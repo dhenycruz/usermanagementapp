@@ -37,7 +37,7 @@ export function UserProvider({ children }: Props) {
     setTotalRows(totalRows);
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 2000);
   };
 
   const openAlert = (text: string) => {

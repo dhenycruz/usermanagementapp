@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Box = styled.div`
+const Box = styled.div<{ loadingPage: Boolean }>`
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 3%;
   display: flex;
@@ -9,11 +9,15 @@ const Box = styled.div`
   height: 550px;
   padding: 10px;
   width: 750px;
+  opacity: ${({ loadingPage }) => loadingPage ? 1 : 0};
 
-  animation: fadeIn 2s;
-  -webkit-animation: fadeIn 2s;
-  -moz-animation: fadeIn 2s;
-  -o-animation: fadeIn 2s;
+  animation: fadeMainbox 3s;
+  animation-delay: 1s;
+
+  @keyframes fadeMainbox {
+    0% {  visibility: visible; opacity: 0; }
+    100% { opacity: 1; }
+  }
 `;
 
 export default Box;
