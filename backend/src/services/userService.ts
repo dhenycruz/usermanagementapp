@@ -18,6 +18,12 @@ interface GetAllUsers {
   getAllUsers: UserReturn[],
 }
 
+interface BodyCreate {
+  name: string,
+  email: string,
+  password: string,
+}
+
 class UserService {
   private model: UserModel;
 
@@ -41,7 +47,7 @@ class UserService {
     return this.model.getUserByQuery(take, skip, query);
   }
 
-  async create(body: User): Promise<UserReturn | ServiceError | null> {
+  async create(body: BodyCreate): Promise<UserReturn | ServiceError | null> {
     const parsed = UserSchema.safeParse(body);
     if (!parsed.success) {
       return { error: parsed.error.issues[0].message };

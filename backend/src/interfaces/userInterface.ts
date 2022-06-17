@@ -10,9 +10,8 @@ export const UserSchema = z.object({
     invalid_type_error: 'Email must be a string.',
   }),
   password: z.string({
-    required_error: 'Password is required.',
     invalid_type_error: 'Password must be a string',
-  }).min(6, { message: 'Password must be 6 or more characters.' }),
+  }).min(6, { message: 'Password must be 6 or more characters.' }).optional(),
 });
 
 export type User = z.infer<typeof UserSchema>;
