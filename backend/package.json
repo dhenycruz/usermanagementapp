@@ -10,9 +10,6 @@
     "lint": "eslint --fix --ext .ts,.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "prisma": {
-    "schema": "src/database/prisma/schema.prisma"
-  },
   "author": "Dheniarley Cruz",
   "license": "ISC",
   "dependencies": {

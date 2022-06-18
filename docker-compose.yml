@@ -1,31 +1,5 @@
 version: '3.9'
 services:
-  frontend:
-    build: ./frontend
-    container_name: Frontend
-    depends_on:
-      backend:
-        condition: service_healthy
-    ports:
-      - 3000:3000
-    environment:
-      - BASEURL=http://localhost:3000
-    healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3000"]
-      timeout: 60s
-      retries: 5
-  backend:
-    build: ./backend
-    container_name: Backend
-    ports:
-      - 3001:3001
-    environment:
-      - DATABASE_URL=postgres://postgres:senhadb@localhost:5432/usermanagementDB
-      - PORT=3001
-    healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3001"]
-      timeout: 60s,
-      retries: 5
   db:
     image: postgres:latest
     ports:
