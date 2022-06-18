@@ -38,7 +38,9 @@ const Pagination = () => {
     const skip =  (6 * pageNumber) -6;
     const { getAllUsers } = await fetchAllUsers(6, skip);
     setGetUsers(getAllUsers);
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
   };
 
   const RenderButtons = () => {

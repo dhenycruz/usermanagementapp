@@ -1,58 +1,29 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const callBackAtive = ({ active }: any) => !active && `
-  animation: fadeOut 2s;
-  -webkit-animation: fadeOut 2s;
-  -moz-animation: fadeOut 2s;
-  -o-animation: fadeOut 2s;
-  display: none;
-`;
-
 const TitleH1 = styled.h1<{ active: Boolean }>`
-  animation: fadeIn 2s;
   font-size: 18px;
   margin-bottom: 10px;
-  -webkit-animation: fadeIn 2s;
-  -moz-animation: fadeIn 2s;
-  -o-animation: fadeIn 2s;
+  opacity: 0;
 
-  ${({ active }) => !active && `
-    animation: fadeOut 2s;
-    -webkit-animation: fadeOut 2s;
-    -moz-animation: fadeOut 2s;
-    -o-animation: fadeOut 2s;
-    display: none;
-  `}
+  animation: fadeIn 10s;
+  animation-delay: 1s;
+  /* -webkit-animation: fadeIn 10s;
+  -moz-animation: fadeIn 10s;
+  -o-animation: fadeIn 10s; */
 
   @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes fadeOut {
-    0% { opacity: 1; }
+    0% {  opacity: 0; }
+    50% { opacity: 1; }
     100% { opacity: 0; }
   }
 `;
 
 const TitleFadeIN = styled.h1<{ active: Boolean }>`
-  animation: fadeIn 2s;
-  -webkit-animation: fadeIn 2s;
-  -moz-animation: fadeIn 2s;
-  -o-animation: fadeIn 2s;
+    opacity: 0;
 
-  ${callBackAtive}
-
-  @keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-  }
+    animation: fadeIn 7s;
+    animation-delay: 3s;
 `;
 
 const TitleWelcome: React.FC = () => {
