@@ -6,6 +6,6 @@ module.exports = {
     reactStrictMode: true,
   },
   env: {
-    BASE_URL: process.env.BASEURL
+    BASEURL: process.env.BASEURL
   }
 };

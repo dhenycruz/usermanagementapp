@@ -1,5 +1,4 @@
 import { genSalt, hash } from 'bcryptjs';
-import { users } from '@prisma/client';
 import { User, UserSchema } from '../interfaces/userInterface';
 import UserModel from '../models/userModel';
 
@@ -76,7 +75,7 @@ class UserService {
     return this.model.update(id, body);
   }
 
-  async delete(id: number): Promise<users | false> {
+  async delete(id: number): Promise<UserReturn | false> {
     const user = await this.model.getUser(id);
     return user
       ? this.model.delete(id)

@@ -184,18 +184,9 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
 
   useEffect(() => {
     const verifyName = () => {
-      if (/\d/.test(valueName)){
-        console.log('tem numero')
-        return false;
-      }
-      if (/\W|_/.test(valueName.replace(/ /g, ""))){
-        console.log('tem caractere especial');
-        return false;
-      } 
-      if (valueName.length < 5) {
-        console.log('tem menos que 5 caractere');
-        return false;
-      }
+      if (/\d/.test(valueName)) return false;
+      if (/\W|_/.test(valueName.replace(/ /g, ""))) return false; 
+      if (valueName.length < 5) return false;
       return true;
     };
     const verifyEmail = () => {
