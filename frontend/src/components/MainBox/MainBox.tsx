@@ -18,6 +18,20 @@ const Box = styled.div<{ loadingPage: Boolean }>`
     0% {  visibility: visible; opacity: 0; }
     100% { opacity: 1; }
   }
+
+  @media (max-width: 575.98px) {
+    width: 95%;
+    height: 80vh;
+  }
+
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    width: 95%;
+    height: 70vh;
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 95%;
+  }
 `;
 
 export default Box;

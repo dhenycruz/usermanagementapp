@@ -12,6 +12,7 @@ export const GlobalStyles = createGlobalStyle<{ theme: ThemeType }>`
     background-size: cover;
     font-family: 'Poppins', sans-serif;
     height: 100vh;
+    width: 100%;
   }
 
   main {
@@ -21,6 +22,7 @@ export const GlobalStyles = createGlobalStyle<{ theme: ThemeType }>`
     height: 100vh;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
   }
 
   main .logo-index {

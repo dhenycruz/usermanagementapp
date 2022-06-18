@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Modal = styled.div<{ open: boolean }>`
-    animation: fadeIn 0.1s;
+    animation: openModal 0.1s;
     display: none;
     justify-content: center;
     align-items: center;
@@ -13,17 +13,17 @@ export const Modal = styled.div<{ open: boolean }>`
     background: rgba(0,0,0,0.5);
     backdrop-filter: blur(2px);
 
-    @keyframes fadeIn {
+    @keyframes openModal {
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
 
-    @keyframes fadeOut {
+    @keyframes closeModal {
       0% { opacity: 1; }
       100% { opacity: 0;}
     }
 
-    ${({ open }) => open ? `display: flex `: `animation: fadeOut 1s` }
+    ${({ open }) => open ? `display: flex `: `animation: closeModal 1s` }
 `;
 
 export const ModalContainer = styled.section`

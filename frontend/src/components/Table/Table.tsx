@@ -113,7 +113,7 @@ const TableUser = () => {
           <h2>Lista de usuários</h2>
           <InputSearch>
             <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
-            {/* https://icons8.com.br/icons/set/search--purple */}
+            {/* https://icons8.com.br/icons/set/search--purple */ }
             <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
           </InputSearch>
           <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
@@ -123,7 +123,7 @@ const TableUser = () => {
         </TableContainer>
         <FooterBoxTable>
           { users.length > 0 &&  <Pagination /> }
-        </FooterBoxTable>
+        </FooterBoxTable> 
         <CreateUser isOpen={ isOpen } setIsOpen={ setIsOpen } />
         { userSelected.name && (
           <>
@@ -132,10 +132,10 @@ const TableUser = () => {
           </>
         )}
         { alert.alert &&
-              <Alert status='success' variant='solid'>
-                <AlertIcon />
-                { alert.message }
-              </Alert> }
+          <Alert status='success' variant='solid'>
+            <AlertIcon />
+            { alert.message }
+          </Alert> }
       </BoxTable>
     </>
   );

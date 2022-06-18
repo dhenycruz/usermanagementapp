@@ -12,7 +12,7 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
     visibility: hidden;
     width: 30%;
     bottom: 30%;
-    right: 20%;
+    right: -100%;
     border-radius: 10px;
   
     ${({ alert }) => alert && (
@@ -88,14 +88,13 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
 
 export const HeaderBoxTable = styled.div`
   display: flex;
-  width: 750px;
   justify-content: space-between;
+  width: 100%;
   margin-bottom: 30px;
   margin-top: 20px;
 
   h2 {
     color: #510183;
-    margin-left: 50px;
   }
 
   button {
@@ -107,6 +106,17 @@ export const HeaderBoxTable = styled.div`
 
   button:hover {
     background-color: #5f00db39;
+  }
+
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    h2 {
+      display: block;
+      width: 35%;
+    }
+    button {
+      margin-right: 10px;
+    width: 20%;
+   }
   }
 `;
 
@@ -143,5 +153,9 @@ export const InputSearch = styled.div`
 
   input:focus {
     outline: 1px solid #6600cc;
+  }
+
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    width:40%;
   }
 `;
