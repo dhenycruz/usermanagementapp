@@ -52,27 +52,19 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
     text-align: center;
   }
 
+  .tableBody {
+    display: block;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 76%;
+    margin: 0;
+    padding: 0;
+    overflow-y: visible;
+  }
+
   tbody tr:hover {
     background-color: #5f00db39;
-  }
-  input {
-    border: 1px solid #5f00db39;
-  }
-
-  input:hover {
-    border: 1px solid #5f00db39;
-    background-color: #5f00db39;
-  }
-
-  img:hover {
-    cursor: pointer;
-  }
-
-  .tableBody {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 65%;
   }
 
   .delete-user:hover {
@@ -84,10 +76,29 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
     color: green;
     font-weight: 700;
   }
+
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .tableBody {
+      height: 65%;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .tableBody {
+      height: 65%;
+    }
+  }
+
+  @media (min-width: 991.99px) {
+    .tableBody {
+      height: 68%;
+    }
+  }
 `;
 
 export const HeaderBoxTable = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 30px;
@@ -97,7 +108,11 @@ export const HeaderBoxTable = styled.div`
     color: #510183;
   }
 
-  button {
+  .search-add-user {
+    display: block;
+  }
+
+   button {
     border: 1px solid #5f00db39;
     border-radius: 5px;
     margin-right: 50px;
@@ -108,15 +123,71 @@ export const HeaderBoxTable = styled.div`
     background-color: #5f00db39;
   }
 
+  @media (max-width: 575.98px) {
+    flex-direction: column;
+    margin-bottom: 15px;;
+    margin-top: 0;
+    h2 {
+      width: 100%;
+
+    }
+
+    .search-add-user {
+      display: none;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left:5px;
+    }
+  }
+
   @media (min-width: 576px) and (max-width: 767.98px) {
     h2 {
-      display: block;
-      width: 35%;
+      width: 40%;
     }
+    .search-add-user {
+      display: flex;
+    }
+
     button {
-      margin-right: 10px;
-    width: 20%;
-   }
+      margin-right: 0;
+      margin-left: 10px;
+    }
+
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    h2 {
+      margin-left: 30px;
+      width: 30%;
+    }
+    .search-add-user {
+      display: flex;
+      width: 70%;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
+
+  @media (min-width: 991.99px) {
+    h2 {
+      margin-left: 30px;
+      width: 30%;
+    }
+
+    .search-add-user {
+      display: flex;
+      width: 60%;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left: 10px;
+    }
   }
 `;
 
@@ -125,6 +196,18 @@ export const FooterBoxTable = styled.div`
   width: 100%;
   justify-content:center;
   margin-top: 40px;
+
+  @media (max-width: 575.98px) {
+    
+  }
+
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    
+  }
 `;
 
 export const InputSearch = styled.div`
@@ -145,17 +228,36 @@ export const InputSearch = styled.div`
     height: 100%;
     text-align: center;
     width: 100%;
+    border: 1px solid #5f00db39;
   }
 
   input:hover {
     background-color: white;
+    border: 1px solid #5f00db39;
+    background-color: #5f00db39;
   }
 
   input:focus {
     outline: 1px solid #6600cc;
   }
 
+  img:hover {
+    cursor: pointer;
+  }
+
+  @media (max-width: 575.98px) {
+    width: 60%;
+  }
+
   @media (min-width: 576px) and (max-width: 767.98px) {
-    width:40%;
+    width: 60%;
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 70%;
+  }
+
+  @media (min-width: 991.99px) {
+    width: 60%;
   }
 `;

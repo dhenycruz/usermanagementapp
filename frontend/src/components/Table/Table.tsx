@@ -111,12 +111,14 @@ const TableUser = () => {
       <BoxTable alert={ alert.alert }>
         <HeaderBoxTable>
           <h2>Lista de usuários</h2>
-          <InputSearch>
-            <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
-            {/* https://icons8.com.br/icons/set/search--purple */ }
-            <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
-          </InputSearch>
-          <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
+          <div className="search-add-user">
+            <InputSearch>
+              <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
+              {/* https://icons8.com.br/icons/set/search--purple */ }
+              <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
+            </InputSearch>
+            <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
+          </div>
         </HeaderBoxTable>
         <TableContainer className="tableBody">
           <RenderTable />

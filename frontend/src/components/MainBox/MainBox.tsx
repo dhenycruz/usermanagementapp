@@ -6,7 +6,7 @@ const Box = styled.div<{ loadingPage: Boolean }>`
   display: flex;
   flex-direction: column;
   color: black;
-  height: 550px;
+  height: 100%;
   padding: 10px;
   width: 750px;
   opacity: ${({ loadingPage }) => loadingPage ? 1 : 0};
@@ -21,16 +21,24 @@ const Box = styled.div<{ loadingPage: Boolean }>`
 
   @media (max-width: 575.98px) {
     width: 95%;
-    height: 80vh;
+    height: 70%;
+    border-radius: 1%;
+    padding: 5px;
   }
 
   @media (min-width: 576px) and (max-width: 767.98px) {
     width: 95%;
-    height: 70vh;
+    height: 70%;
   }
 
   @media (min-width: 768px) and (max-width: 991.98px) {
     width: 95%;
+    height: 70%;
+  }
+
+  @media (min-width: 991.99px) {
+    width: 75%;
+    height: 65%;
   }
 `;
 
