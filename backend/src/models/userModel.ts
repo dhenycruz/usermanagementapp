@@ -1,4 +1,3 @@
-import { users } from '@prisma/client';
 import prisma from '../database/connection';
 import { User } from '../interfaces/userInterface';
 
@@ -106,7 +105,7 @@ class UserModel {
     return { totalRows, getAllUsers };
   }
 
-  async delete(id: number): Promise <users | false> {
+  async delete(id: number): Promise <UserReturn | false> {
     return prisma.users.delete({
       where: {
         id_user: id,
