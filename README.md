@@ -47,40 +47,40 @@ De que coisas você precisa para instalar o software e como instalá-lo?
 
   - Banco de Dados Postgree
     - Utilizando Docker
-      Se tiver com Postgres instalado na máquina, você tem que para-lo:
+     - Se tiver com Postgres instalado na máquina, você tem que para-lo:
         `sudo service postgresql stop`
       Depois verifique se o Postgres está inativo:
         `sudo service postgresql status`
-      - Se não estiver na pasta principal do projeto, vá para  a pasta principal e rode o comonando compose:up
+     - Se não estiver na pasta principal do projeto, vá para  a pasta principal e rode o comonando compose:up
         `cd ... && npm run compose:up`
         obs.: Caso queira parar o container do db rode o comando `npm run compose:down`
   
   - .env
     - Para iniciar o backend é preciso ter um arquivo .env na pasta backend com as credenciais do banco de dados
-      - Caso esteja utilizando o container do banco de dados crie o arquivo .env com o conteudo a seguir.
+     - Caso esteja utilizando o container do banco de dados crie o arquivo .env com o conteudo a seguir.
         DATABASE_URL="postgres://postgres:senhadb@127.0.0.1:5432/usermanagementDB"
       - caso deseja utilizar um banco de dados postgres local, coloque sua url com suas credências
     - Para iniciar o frontend é preciso ter o arquivo .env com a url da api gerado pelo backend.
-      - crie o arquivo .env com o url
+     - Crie o arquivo .env com o url
         http://localhost:3001 
   
   - Iniciando backend
     - Com banco de dados funcionando e com os arquivos .env criados e com seus conteudos corretos, vamos iniciar o o backend
-      - Primeiramente vamos dar npx prisma db push
-        - Na pasta principal do projeto, vamos entrar no backend/src/database
+     - Primeiramente vamos dar npx prisma db push
+      - Na pasta principal do projeto, vamos entrar no backend/src/database
           `cd backend/src/database`
-        - Agora sim, vamos dar o npx prisma db push
+      - Agora sim, vamos dar o npx prisma db push
           `npx prisma db push`
           Assim nosso backend já está se comunicando com o nosso banco de dados
       - O próximo passo e ultimo para nosso backend é iniciar o backend
           `npm start`
   - Iniciando o frontend
     - Há duas maneiras de fazer rodar nosso frontend, umas como modo desenvolvedor e outra buildando a aplicação e depois dando npm start.
-      - Para rodar o frontend, certifique que existe o arquivo .env com a url da api do backend.
-        - Modo desenvolvedor:
-          `npm run dev`
-        - Modo produção:
-          `npm run build && npm start`
+     - Para rodar o frontend, certifique que existe o arquivo .env com a url da api do backend.
+      - Modo desenvolvedor:
+        `npm run dev`
+      - Modo produção:
+        `npm run build && npm start`
 
 Assim a nossa aplicação estará rodando localmente
 
@@ -160,6 +160,12 @@ Por fim um footer com meus dados e rede sociais, essa foi um resumode como foi c
   - CHAKRA-UI
   - TYPESCRIPT
   - ESLINT
+
+- TEST
+  - JEST
+  - MOCHA
+  - CHAI
+  - SINON
 
 ## Autor
 ---
