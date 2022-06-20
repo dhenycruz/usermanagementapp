@@ -124,8 +124,8 @@ const TableUser = () => {
             <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
           </div>
           <div className="AddUser">
-            <Image src={ SearchUser } onClick={ () => setSearchMobile(true) } alt="Pesquisar Usuário" width={ 40 } height={ 40 } />
-            <Image src={ AddImage } onClick={ () => setIsOpen(true) } alt="Adicionar User" width={ 40 } height={ 40 } />
+            <Image src={ SearchUser } onClick={ () => setSearchMobile(true) } alt="Pesquisar Usuário" width={ 35 } height={ 35 } />
+            <Image src={ AddImage } onClick={ () => setIsOpen(true) } alt="Adicionar User" width={ 35 } height={ 35 } />
           </div>
         </HeaderBoxTable>
         <InputMobile searchMobile={ searchMobile }>
