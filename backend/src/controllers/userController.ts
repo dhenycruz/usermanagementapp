@@ -57,6 +57,9 @@ class UserController {
 
   async create(req: Request, res: Response) {
     const { body } = req;
+    if (!body.password) {
+      return res.status(400).json({ error: 'Password is required.' });
+    }
     try {
       const newUser = await service.create(body);
       if (!newUser) {
