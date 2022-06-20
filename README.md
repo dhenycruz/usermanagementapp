@@ -1,6 +1,7 @@
 # User Management APP
 
-Aplicação para gerenciamento de usuários, essa aplicação tem o intuito de cadastrar, editar, deletar e buscar usuários específicos pelo nome ou pelo email.
+Aplicação para gerenciamento de usuários:
+ Esta aplicação tem o intuito de cadastrar, editar, deletar e buscar usuários específicos pelo nome ou pelo email.
 
 ## Requisitos:
  - Desenvolver uma aplicação Back-end que irá armazenar no banco de dados PostgreSQL, cadastros de usuários em uma plataforma;
@@ -94,7 +95,7 @@ Assim a nossa aplicação estará rodando localmente
 
 ## ⚙️ Os testes
 
-Para este projeto foi implementado os teste unitários para o backend e ainda não foi implementado o teste E2E, o teste de ponta a ponta para o frontend.
+Este projeto tem a cabertura de 100% dos testes para o backend.
 
 ### 🔩 Analise dos testes
 
@@ -122,19 +123,19 @@ Para ter um estilo padrão no código foi utilizado o Eslint tanto para o backen
 
 ## 📦 Desenvolvimento
 
-Como não foi pedido, resolvi não criar uma página de login, fazer autenticação e etc, para não tomar tempo de desenvolvimento e resolvi gastar esse tempo fazend um backend bem construído, com testes e documentado, o backend foi desenvovido com a arquitetura MSC (model, service, controller), utilizei classes, tanto para cada camada quanto para o arquivo app, onde estaria algumas configurações HTTP da nossa API.
+O backend foi desenvovido com a arquitetura MSC (model, service, controller), utilizei classes, tanto para cada camada quanto para o arquivo app, onde estaria algumas configurações HTTP da nossa API.
 
 Com o backend construido, documentado e testado, fui desenvolver o frontend, optei por utilizar Next.js com styled-components como base na estilização da aplicação, normalmente utilizaria o reac-strap para compoar alguns componentes como por exemplo, tabelas, buttons e até mesmo a responsividade da página.
 
-Nesse projeto eu resolvi ver como o Chakra-UI funciona, utilizei ele estilizar a tabela e o alerta de notificações quando alguns usuário é criado, atualizado, deletado.
+Nesse projeto foi utilizado o Chakra-UI, para estilizar a tabela e o alerta de notificações quando alguns usuário é criado, atualizado ou deletado.
 
-Notei uma grande semelhança com o React-strap, pois os dois já tem componentes estilizados prontos e forma de trabalhar a responsividade. 
+Notei uma grande semelhança com o React-strap, pois os dois já tem componentes estilizados prontos e possuem a mesma forma de trabalhar a responsividade. 
 
 Pretendo utiliza-lo mais vezes em projetos futuros.
 
 ### Composição da aplicação
 
-Como não haveria uma página de login, decidi criar uma página de boas vindas, no caso no index, que depois de dar boas vindas ao usuário, seria redirecionado para a página de dashboard, onde a mágica da aplicação aconteceria.
+Decidi criar uma página de boas vindas, no caso no index, que depois de dar boas vindas ao usuário, seria redirecionado para a página de dashboard, onde a mágica da aplicação aconteceria.
 
 Na página do dashboard, crei um header com o titulo da aplicação, um main com o nossa tabela, contendo o título "Lista de Usuários", input para pesquisar usuários pelo nome ou email, um botão para adicionar usuários e a tabela com usuários já cadastrados com as opções de excluir e editar cada usuário.
 
