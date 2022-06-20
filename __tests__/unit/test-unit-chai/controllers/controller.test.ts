@@ -299,7 +299,7 @@ describe('Testando a camada Controller', () => {
         const userBody = {
           name: 'Dhe',
           email: 'dheniarley@email.com',
-          pssword: 'minhasenha',
+          password: 'minhasenha',
         };
 
         await chai.request(App.getApp())
@@ -318,7 +318,7 @@ describe('Testando a camada Controller', () => {
       it('Se o password não for passado, retorna um objeto especificando esse erro com status 400', async () => {
         const userBody = {
           name: 'Dheniarley',
-          email: 'dheniarley@email.com',
+          email: 'dheni23@email.com',
         };
 
         await chai.request(App.getApp())
@@ -622,66 +622,6 @@ describe('Testando a camada Controller', () => {
           .then((res) => {
             expect(res.status).to.be.equal(400);
             expect(res.body).to.be.eql({ error: 'User name must be 5 or more characters.' });
-          });
-      });
-    });
-
-    describe('Validando o password passado no body do endpoit', () => {
-      const id = 1;
-      const user = {
-        id_user: id,
-        name: 'Dheniarley Cruz',
-        email: 'dheniarley@email.com',
-        password: '123141',
-      };
-
-      before(() => { sinon.stub(UserModel.prototype, 'getUser').resolves(user); });
-      after(() => { sinon.restore(); });
-
-      it('Se o password não for passado, retorna um objeto especificando esse erro com status 400', async () => {
-        const updateBody = {
-          name: 'Dheniarley',
-          email: 'dheniarley@email.com',
-        };
-
-        await chai.request(App.getApp())
-          .put(`/users/${id}`)
-          .send(updateBody)
-          .then((res) => {
-            expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password is required.' });
-          });
-      });
-
-      it('Se o password passado não é do tipo string, retorna um objeto especificando esse erro com status 400', async () => {
-        const updateBody = {
-          name: 'Dheniarley',
-          email: 'dheniarley@email.com',
-          password: 123,
-        };
-
-        await chai.request(App.getApp())
-          .put(`/users/${id}`)
-          .send(updateBody)
-          .then((res) => {
-            expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password must be a string' });
-          });
-      });
-
-      it('Se o password passado for menor que 6 caracteres, retorna um objeto especificando esse erro com status 400', async () => {
-        const updateBody = {
-          name: 'Dheniarley',
-          email: 'dheniarley@email.com',
-          password: '123',
-        };
-
-        await chai.request(App.getApp())
-          .put(`/users/${id}`)
-          .send(updateBody)
-          .then((res) => {
-            expect(res.status).to.be.equal(400);
-            expect(res.body).to.be.eql({ error: 'Password must be 6 or more characters.' });
           });
       });
     });

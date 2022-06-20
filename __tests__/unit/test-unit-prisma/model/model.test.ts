@@ -4,8 +4,21 @@ import { User } from '../../../../backend/src/interfaces/userInterface';
 
 const model = new UserModel();
 
-interface UserID extends User {
-  id_user: number;
+interface UserID {
+  id_user: number,
+  name: string,
+  email: string,
+}
+
+interface BodyCreate {
+  name: string,
+  email: string,
+  password: string,
+}
+
+interface BodyUpdate {
+  name: string,
+  email: string,
 }
 
 describe('Testando a camada model: class UserModel - método getUsers:', () => {
@@ -49,12 +62,11 @@ describe('Testando a camada model: class UserModel - método getUsers:', () => {
   });
 
   test('Se não haver nenhum usuário no banco de dados, deverá retorna um array vazio', async () => {
-    const users: UserID[] = [];
     jest.spyOn(prisma.users, 'count').mockResolvedValue(0);
-    jest.spyOn(prisma.users, 'findMany').mockResolvedValue(users);
+    jest.spyOn(prisma.users, 'findMany').mockResolvedValue([]);
     const take = 6;
     const skip = 0;
-    await expect(model.getUsers(take, skip)).resolves.toEqual({ totalRows: 0, getAllUsers: users });
+    await expect(model.getUsers(take, skip)).resolves.toEqual({ totalRows: 0, getAllUsers: [] });
   });
 });
 
@@ -138,14 +150,11 @@ describe('Testnado a camda model: class UserModel - método getUserByQuery', () 
     const take = 6;
     const skip = 0;
     const query = 'dio';
-
-    const user: UserID[] = [];
-  
     
     jest.spyOn(prisma.users, 'count').mockResolvedValue(0);
-    jest.spyOn(prisma.users,  'findMany').mockResolvedValue(user);
+    jest.spyOn(prisma.users,  'findMany').mockResolvedValue([]);
 
-    await expect(model.getUserByQuery(take, skip, query)).resolves.toEqual({ totalRows: 0, getAllUsers: user });
+    await expect(model.getUserByQuery(take, skip, query)).resolves.toEqual({ totalRows: 0, getAllUsers: [] });
   });
 });
 
@@ -153,10 +162,10 @@ describe('Testando a camada model: class UserModel - método create', () => {
   prisma.users.create = jest.fn();
   test('Ao criar um novo usuário, o método retorna um objeto com o novo usuário', async () => {
     const id = 1;
-    const userBody: User = {
-      "name": "Juliana",
-      "email": "ju@email.com",
-      "password": "senhadaju"
+    const userBody: BodyCreate = {
+      name: "Juliana",
+      email: "ju@email.com",
+      password: "senhadaju"
     }
 
     jest.spyOn(prisma.users, 'create').mockResolvedValue({ id_user: id, ...userBody });
@@ -172,7 +181,6 @@ describe('Testando a camada model: class UserModel - método update', () => {
     const userBody: User = {
       "name": "Juliana",
       "email": "ju@email.com",
-      "password": "senhaju"
     }
 
     jest.spyOn(prisma.users, 'update').mockResolvedValue({ id_user: id, ...userBody});
