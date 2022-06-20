@@ -32,7 +32,7 @@ type Props = {
 
 interface Event {
   target: {
-    name: string,
+    name?: string,
     value: string,
   }
 }
@@ -70,19 +70,20 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
   };
 
 
-  const handleChange = ({ target: { name, value} }: Event ) => {
-    if (name === 'name') {
+  const handleChangeName = ({ target: { value } }: Event ) => {
       validateName(value);
       if (value.length >= 5) {
         setError((prev) => prev.filter((message) => message !== 'Nome tem que ter no mínimo 5 caracteres.'));
       }
       setName(value);
-    }
-    if (name === 'email') {
-      setEmail(value);
-    }
-    if (name === 'password') {
-      const lastLetter = value.slice(-1);
+  };
+
+  const handleChangeEmail = ({ target: { value } }: Event) => {
+    setEmail(value);
+  }
+
+  const handleChangePassword = ({ target: { value } }: Event) => {
+    const lastLetter = value.slice(-1);
       if (lastLetter === ' ') {
         if (error.length > 0) {
           if (!error.some((message) => message === 'A senha não pode conter espaços em branco.')) {
@@ -102,8 +103,7 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
         setError((prev) => prev.filter((message) => message != 'A senha tem que ter no mínimo 6 caracteres.'));
       }
       setPassword(value);
-    }
-  };
+  }
 
   const validateFocusName = ({ target: { value} }: Event) => {
     if(value === '') {
@@ -228,15 +228,15 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
         <ModalBody>
             <Label>
               <p>Nome:</p>
-              <Input name="name" value={ valueName } type="text" onBlur={ validateFocusName } onChange={ handleChange } />
+              <Input name="name" value={ valueName } type="text" onBlur={ validateFocusName } onChange={ handleChangeName } />
             </Label>
             <Label>
               Email:
-              <Input name="email" value={ valueEmail } type="email" onBlur={ validateFocusEmail }  onChange={ handleChange } />
+              <Input name="email" value={ valueEmail } type="email" onBlur={ validateFocusEmail }  onChange={ handleChangeEmail } />
             </Label>
             <Label>
               Password:
-              <Input name="password" value={ valuePassword } type="password" onBlur={ validateFocusPassword }  onChange={ handleChange }/>
+              <Input name="password" value={ valuePassword } type="password" onBlur={ validateFocusPassword }  onChange={ handleChangePassword }/>
             </Label>
             { error.length > 0 &&
               <AlertBox>
