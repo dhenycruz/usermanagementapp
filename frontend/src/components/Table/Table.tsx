@@ -71,7 +71,7 @@ const TableUser = () => {
     setTotalRows(totalRows);
   };
 
-    const RenderTable = () => {
+  const RenderTable = () => {
     if (!loading) {
       if (users.length <= 0) {
         return <p className="user-not-found">Nenhum usuário encontrado!</p>
@@ -110,6 +110,13 @@ const TableUser = () => {
     return <Loading />
   }
 
+  const closeSearchMobile = () => {
+    setSearchMobile(false);
+    setSearchUser('');
+    setLoading(true);
+    getUsers(6, 0);
+  };
+
   return(
     <>
       <BoxTable alert={ alert.alert } searchMobile={ searchMobile }>
@@ -130,7 +137,7 @@ const TableUser = () => {
         </HeaderBoxTable>
         <InputMobile searchMobile={ searchMobile }>
           <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
-          <button type="button" onClick={ () => setSearchMobile(false) }>X</button>
+          <button type="button" onClick={ () => closeSearchMobile() }>X</button>
         </InputMobile>
         <TableContainer className="tableBody">
           <RenderTable />
