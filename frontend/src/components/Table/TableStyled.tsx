@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const BoxTable = styled.div<{ alert: Boolean }>`
+export const BoxTable = styled.div<{ alert: Boolean, searchMobile: Boolean }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -59,6 +59,7 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
     width: 100%;
     height: 76%;
     margin: 0;
+    margin-top: ${({ searchMobile }) => searchMobile ? '60px' : '0'};
     padding: 0;
     overflow-y: visible;
   }
@@ -96,7 +97,7 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
   }
 `;
 
-export const HeaderBoxTable = styled.div`
+export const HeaderBoxTable = styled.div<{ searchMobile: Boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -112,6 +113,11 @@ export const HeaderBoxTable = styled.div`
     display: block;
   }
 
+  .AddUser {
+    cursor: pointer;
+    display: block;
+  }
+
    button {
     border: 1px solid #5f00db39;
     border-radius: 5px;
@@ -124,12 +130,19 @@ export const HeaderBoxTable = styled.div`
   }
 
   @media (max-width: 575.98px) {
-    flex-direction: column;
-    margin-bottom: 15px;;
+    display: ${({ searchMobile }) => searchMobile ? 'none' : 'flex'};
     margin-top: 0;
+
     h2 {
       width: 100%;
+    }
 
+    .AddUser {
+      width: 25%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .search-add-user {
@@ -150,6 +163,10 @@ export const HeaderBoxTable = styled.div`
       display: flex;
     }
 
+    .AddUser {
+      display: none;
+    }
+
     button {
       margin-right: 0;
       margin-left: 10px;
@@ -162,11 +179,16 @@ export const HeaderBoxTable = styled.div`
       margin-left: 30px;
       width: 30%;
     }
+
+    .AddUser {
+      display: none;
+    }
+
     .search-add-user {
       display: flex;
       width: 70%;
     }
-
+    
     button {
       margin-right: 0;
       margin-left: 10px;
@@ -177,6 +199,10 @@ export const HeaderBoxTable = styled.div`
     h2 {
       margin-left: 30px;
       width: 30%;
+    }
+
+    .AddUser {
+      display: none;
     }
 
     .search-add-user {
@@ -191,23 +217,51 @@ export const HeaderBoxTable = styled.div`
   }
 `;
 
+export const InputMobile = styled.div<{ searchMobile: Boolean }>`
+    display: ${({ searchMobile}) => searchMobile ? 'flex' : 'none'};
+    flex-wrap: nowrap;
+    width: 95%;
+    position:fixed;
+
+    input {
+      width: 75%;
+      border: none;
+      border-bottom: 1px solid #510183;
+      padding: 20px;
+      color: #510183;
+      font-size: 18px;
+      background: none;
+    }
+
+    input:hover {
+      border-bottom: 1px solid #6600cc;
+    }
+
+    input:focus {
+      outline: none;
+    }
+
+    button {
+      width: 20%;
+      background: none;
+      border: none;
+      color: #510183;
+      font-size: 32px;
+      font-weight: 700;
+      padding: 0;
+      text-align: center;
+    }
+
+    button:hover {
+      color: #8c30c4;
+    }
+`;
+
 export const FooterBoxTable = styled.div`
   display: flex;
   width: 100%;
   justify-content:center;
   margin-top: 40px;
-
-  @media (max-width: 575.98px) {
-    
-  }
-
-  @media (min-width: 576px) and (max-width: 767.98px) {
-    
-  }
-
-  @media (min-width: 768px) and (max-width: 991.98px) {
-    
-  }
 `;
 
 export const InputSearch = styled.div`

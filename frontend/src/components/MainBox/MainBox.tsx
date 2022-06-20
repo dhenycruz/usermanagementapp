@@ -21,7 +21,7 @@ const Box = styled.div<{ loadingPage: Boolean }>`
 
   @media (max-width: 575.98px) {
     width: 95%;
-    height: 70%;
+    height: 75%;
     border-radius: 1%;
     padding: 5px;
   }
