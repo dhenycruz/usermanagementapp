@@ -68,14 +68,37 @@ export const BoxTable = styled.div<{ alert: Boolean, searchMobile: Boolean }>`
     background-color: #5f00db39;
   }
 
-  .delete-user:hover {
+  .delete-user {
+    background: none;
+    border: 1px solid red;
+    border-radius: 10px;
     color: red;
     font-weight: 700;
+    padding: 3px 15px;
+  }
+  .delete-user:hover {
+    background-color: red;
+    font-weight: 700;
+    color: white;
+  }
+
+  .update-user {
+    background: none;
+    border: 1px solid green;
+    border-radius: 10px;
+    color: green;
+    font-weight: 700;
+    padding: 2px 15px;
   }
 
   .update-user:hover {
-    color: green;
+    background-color: green;
     font-weight: 700;
+    color: white;
+  }
+
+  .edit-update-mobile {
+    display: none;
   }
 
   @media (max-width: 575.98px) {
@@ -85,6 +108,25 @@ export const BoxTable = styled.div<{ alert: Boolean, searchMobile: Boolean }>`
 
     .td-email {
       display: none;
+    }
+
+    .th-delupuser-none {
+      display: none;
+    }
+
+    .edit-update-mobile {
+      display: flex;
+      width: 100%;
+      justify-content: space-evenly;
+      margin-right: 10px;
+    }
+
+    .DeleteUser {
+      margin-left: 10px;
+    }
+
+    .edit-update-mobile img {
+      margin-left: 10px;
     }
   }
 

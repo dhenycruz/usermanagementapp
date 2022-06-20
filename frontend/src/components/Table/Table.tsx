@@ -22,6 +22,8 @@ import Loading from '../Loading/Loagind';
 import { getUserByQuery } from '../../services/api-backend';
 import { BoxTable, HeaderBoxTable, InputMobile, FooterBoxTable, InputSearch } from './TableStyled';
 import AddImage from '../../../public/adduser.png';
+import DeleteImage from '../../../public/deleteuser.png';
+import EditImage from '../../../public/edituser.png';
 
 interface Event {
   target: {
@@ -85,7 +87,7 @@ const TableUser = () => {
                 <Th>nome</Th>
                 <Th className="th-email">email</Th>
                 <Th></Th>
-                <Th></Th>
+                <Th className="th-delupuser-none"></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -94,10 +96,41 @@ const TableUser = () => {
                   <Td><b>{ user.id_user }</b></Td>
                   <Td>{ user.name }</Td>
                   <Td className="td-email">{ user.email }</Td>
-                  <Td className="delete-user" onClick={ () => deleteUser(user) }>
-                    excluir
+                  <Td className="th-delupuser-none">
+                    <button
+                      className="delete-user"
+                      type="button"
+                      onClick={ () => deleteUser(user) }
+                    >
+                      Excluir
+                    </button>
                   </Td>
-                  <Td className="update-user" onClick={ () => updateUser(user) }>editar</Td>
+                  <Td className="th-delupuser-none">
+                    <button
+                      className="update-user"
+                      onClick={ () => updateUser(user) }
+                      type="button"
+                    >
+                      Editar
+                    </button>
+                  </Td>
+                  <Td className="edit-update-mobile">
+                    <Image
+                      src={ DeleteImage }
+                      alt="deleter user"
+                      onClick={ () => deleteUser(user) }
+                      width={ 25 }
+                      height={ 25 }
+                    />
+                    <Image
+                      src={ EditImage }
+                      alt="deleter user"
+                      className="DeleteUser"
+                      onClick={ () => updateUser(user) }
+                      width={ 25 }
+                      height={ 25 }
+                    />
+                  </Td>
                 </Tr> ))
               }
             </Tbody>
