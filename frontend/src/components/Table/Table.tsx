@@ -20,7 +20,8 @@ import { UserContext } from '../../context/UserContext';
 import { IUser } from '../../interfaces/interfaces';
 import Loading from '../Loading/Loagind';
 import { getUserByQuery } from '../../services/api-backend';
-import { BoxTable, HeaderBoxTable, FooterBoxTable, InputSearch } from './TableStyled';
+import { BoxTable, HeaderBoxTable, InputMobile, FooterBoxTable, InputSearch } from './TableStyled';
+import AddImage from '../../../public/adduser.png';
 
 interface Event {
   target: {
@@ -35,6 +36,7 @@ const TableUser = () => {
   const [isOpenUp, setIsOpenUp] = useState(false);
   const [searchUser, setSearchUser] = useState('');
   const [userSelected, setSelectUser] = useState<IUser>({} as IUser);
+  const [searchMobile, setSearchMobile] = useState<boolean>(false);
   const {
     users,
     loading,
@@ -81,7 +83,7 @@ const TableUser = () => {
               <Tr>
                 <Th>#id</Th>
                 <Th>nome</Th>
-                <Th>email</Th>
+                <Th className="th-email">email</Th>
                 <Th></Th>
                 <Th></Th>
               </Tr>
@@ -91,8 +93,10 @@ const TableUser = () => {
                 <Tr key={ index }>
                   <Td><b>{ user.id_user }</b></Td>
                   <Td>{ user.name }</Td>
-                  <Td>{ user.email }</Td>
-                  <Td className="delete-user" onClick={ () => deleteUser(user) }>excluir</Td>
+                  <Td className="td-email">{ user.email }</Td>
+                  <Td className="delete-user" onClick={ () => deleteUser(user) }>
+                    excluir
+                  </Td>
                   <Td className="update-user" onClick={ () => updateUser(user) }>editar</Td>
                 </Tr> ))
               }
@@ -106,18 +110,35 @@ const TableUser = () => {
     return <Loading />
   }
 
+  const closeSearchMobile = () => {
+    setSearchMobile(false);
+    setSearchUser('');
+    setLoading(true);
+    getUsers(6, 0);
+  };
+
   return(
     <>
-      <BoxTable alert={ alert.alert }>
-        <HeaderBoxTable>
+      <BoxTable alert={ alert.alert } searchMobile={ searchMobile }>
+        <HeaderBoxTable searchMobile={ searchMobile }>
           <h2>Lista de usuários</h2>
-          <InputSearch>
-            <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
-            {/* https://icons8.com.br/icons/set/search--purple */ }
-            <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
-          </InputSearch>
-          <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
+          <div className="search-add-user">
+            <InputSearch>
+              <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
+              {/* https://icons8.com.br/icons/set/search--purple */ }
+              <Image src={ SearchUser } alt="icone pesquisar" width={ 40 } height={ 28 }/>
+            </InputSearch>
+            <button type="button" onClick={ () => setIsOpen(true) }>Adicionar usuário</button>
+          </div>
+          <div className="AddUser">
+            <Image src={ SearchUser } onClick={ () => setSearchMobile(true) } alt="Pesquisar Usuário" width={ 35 } height={ 35 } />
+            <Image src={ AddImage } onClick={ () => setIsOpen(true) } alt="Adicionar User" width={ 35 } height={ 35 } />
+          </div>
         </HeaderBoxTable>
+        <InputMobile searchMobile={ searchMobile }>
+          <input placeholder="Pesquisar por usuários" value={ searchUser } onChange={ handleChange }/>
+          <button type="button" onClick={ () => closeSearchMobile() }>X</button>
+        </InputMobile>
         <TableContainer className="tableBody">
           <RenderTable />
         </TableContainer>

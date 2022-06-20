@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const BoxTable = styled.div<{ alert: Boolean }>`
+export const BoxTable = styled.div<{ alert: Boolean, searchMobile: Boolean }>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -52,27 +52,20 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
     text-align: center;
   }
 
+  .tableBody {
+    display: block;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 76%;
+    margin: 0;
+    margin-top: ${({ searchMobile }) => searchMobile ? '60px' : '0'};
+    padding: 0;
+    overflow-y: visible;
+  }
+
   tbody tr:hover {
     background-color: #5f00db39;
-  }
-  input {
-    border: 1px solid #5f00db39;
-  }
-
-  input:hover {
-    border: 1px solid #5f00db39;
-    background-color: #5f00db39;
-  }
-
-  img:hover {
-    cursor: pointer;
-  }
-
-  .tableBody {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 65%;
   }
 
   .delete-user:hover {
@@ -84,10 +77,39 @@ export const BoxTable = styled.div<{ alert: Boolean }>`
     color: green;
     font-weight: 700;
   }
+
+  @media (max-width: 575.98px) {
+    .th-email {
+      display: none;
+    }
+
+    .td-email {
+      display: none;
+    }
+  }
+
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    .tableBody {
+      height: 65%;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    .tableBody {
+      height: 65%;
+    }
+  }
+
+  @media (min-width: 991.99px) {
+    .tableBody {
+      height: 68%;
+    }
+  }
 `;
 
-export const HeaderBoxTable = styled.div`
+export const HeaderBoxTable = styled.div<{ searchMobile: Boolean }>`
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   width: 100%;
   margin-bottom: 30px;
@@ -97,7 +119,16 @@ export const HeaderBoxTable = styled.div`
     color: #510183;
   }
 
-  button {
+  .search-add-user {
+    display: block;
+  }
+
+  .AddUser {
+    cursor: pointer;
+    display: block;
+  }
+
+   button {
     border: 1px solid #5f00db39;
     border-radius: 5px;
     margin-right: 50px;
@@ -108,16 +139,132 @@ export const HeaderBoxTable = styled.div`
     background-color: #5f00db39;
   }
 
+  @media (max-width: 575.98px) {
+    display: ${({ searchMobile }) => searchMobile ? 'none' : 'flex'};
+    margin-top: 0;
+
+    h2 {
+      width: 100%;
+    }
+
+    .AddUser {
+      width: 25%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-add-user {
+      display: none;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left:5px;
+    }
+  }
+
   @media (min-width: 576px) and (max-width: 767.98px) {
     h2 {
-      display: block;
-      width: 35%;
+      width: 40%;
     }
+    .search-add-user {
+      display: flex;
+    }
+
+    .AddUser {
+      display: none;
+    }
+
     button {
-      margin-right: 10px;
-    width: 20%;
-   }
+      margin-right: 0;
+      margin-left: 10px;
+    }
+
   }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    h2 {
+      margin-left: 30px;
+      width: 30%;
+    }
+
+    .AddUser {
+      display: none;
+    }
+
+    .search-add-user {
+      display: flex;
+      width: 70%;
+    }
+    
+    button {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
+
+  @media (min-width: 991.99px) {
+    h2 {
+      margin-left: 30px;
+      width: 30%;
+    }
+
+    .AddUser {
+      display: none;
+    }
+
+    .search-add-user {
+      display: flex;
+      width: 60%;
+    }
+
+    button {
+      margin-right: 0;
+      margin-left: 10px;
+    }
+  }
+`;
+
+export const InputMobile = styled.div<{ searchMobile: Boolean }>`
+    display: ${({ searchMobile}) => searchMobile ? 'flex' : 'none'};
+    flex-wrap: nowrap;
+    width: 95%;
+    position:fixed;
+
+    input {
+      width: 75%;
+      border: none;
+      border-bottom: 1px solid #510183;
+      padding: 20px;
+      color: #510183;
+      font-size: 18px;
+      background: none;
+    }
+
+    input:hover {
+      border-bottom: 1px solid #6600cc;
+    }
+
+    input:focus {
+      outline: none;
+    }
+
+    button {
+      width: 20%;
+      background: none;
+      border: none;
+      color: #510183;
+      font-size: 32px;
+      font-weight: 700;
+      padding: 0;
+      text-align: center;
+    }
+
+    button:hover {
+      color: #8c30c4;
+    }
 `;
 
 export const FooterBoxTable = styled.div`
@@ -145,17 +292,36 @@ export const InputSearch = styled.div`
     height: 100%;
     text-align: center;
     width: 100%;
+    border: 1px solid #5f00db39;
   }
 
   input:hover {
     background-color: white;
+    border: 1px solid #5f00db39;
+    background-color: #5f00db39;
   }
 
   input:focus {
     outline: 1px solid #6600cc;
   }
 
+  img:hover {
+    cursor: pointer;
+  }
+
+  @media (max-width: 575.98px) {
+    width: 60%;
+  }
+
   @media (min-width: 576px) and (max-width: 767.98px) {
-    width:40%;
+    width: 60%;
+  }
+
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    width: 70%;
+  }
+
+  @media (min-width: 991.99px) {
+    width: 60%;
   }
 `;
