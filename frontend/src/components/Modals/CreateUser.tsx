@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../context/UserContext';
 import styled from 'styled-components';
@@ -34,6 +35,14 @@ interface Event {
   target: {
     name?: string,
     value: string,
+  }
+}
+
+interface ErrorServer {
+  response: {
+    data: {
+      error: string;
+    }
   }
 }
 
@@ -214,7 +223,12 @@ const CreateUser = ({ isOpen, setIsOpen }: Props) => {
       getUsers(6,0);
       openAlert('Usuário cadastrado com sucesso!');
     } catch (e) {
-      console.log('Algo deu errado!');
+      const erro = e as AxiosError;
+      if (erro.response?.status === 401) {
+        setError(['Email já cadastrado!']);
+      } else {
+        console.log("Algo deu errado");
+      }  
     }
   }
 

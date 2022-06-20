@@ -41,7 +41,7 @@ interface Event {
 }
 
 const UpdateUser = ({ isOpen, setIsOpen, user, setSelectUser }: Props) => {
-  const { getUsers, setLoading } = useContext(UserContext);
+  const { getUsers, setLoading, openAlert } = useContext(UserContext);
   const [valueName, setName] = useState(user.name);
   const [valueEmail, setEmail] = useState(user.email);
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -158,8 +158,9 @@ const UpdateUser = ({ isOpen, setIsOpen, user, setSelectUser }: Props) => {
       setLoading(true);
       cancelORClose();
       getUsers(6,0);
+      openAlert('Usuário atualizado com sucesso!');
     } catch (e) {
-      console.log('Algo deu errado!');
+      console.log(e);
     }
   }
 
