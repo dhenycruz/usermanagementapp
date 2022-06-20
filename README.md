@@ -116,12 +116,14 @@ Utilizei o jest para fazer os testes unitários na camada model, pois utilizando
       `npm run test-jest`
     - Para ver a porcentagem de cobertura do test rode o comando:
       `npm run test-jest:coverage`
+      <img src="/images/test-coverage-jest-models2.png" alt="Teste model coverage" />
       
   - Testando a camada services e controller
     - Para rodar os testes para camada service e controller, ainda na pasta principal rode o comando
       `npm run test`
     - Para ver a porcentagem de cobertura do test rode o comando:
       `npm run test:coverage`
+      <img src="/images/test-coverage-controller-services2.png" alt="Teste model coverage" />
       
 
 ### ⌨️ Testes de estilo de codificação
@@ -204,8 +206,7 @@ Agradecer ao Lucas, CEO da empresa Meu Guru, pela entrevista e pela oportunidade
 ## Autor
 ---
 
-
- 
+<img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/26901028?s=400&u=d99619f0fcc7ff7d8407ff05a0e90a0149f959ee&v=4" width="100px;" alt=""/>
  
  Dheniarley Cruz 🚀
 
