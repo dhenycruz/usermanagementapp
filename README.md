@@ -1,6 +1,6 @@
 # User Management APP
 
-Aplicação para gerenciamento de usuários. Esta aplicação tem o intuito de cadastrar, editar, deletar e buscar usuários específicos pelo nome ou pelo email.
+Aplicação para gerenciamento de usuários 100% responsivel. Esta aplicação tem o intuito de cadastrar, editar, deletar e buscar usuários específicos pelo nome ou pelo email.
 
 ## Requisitos:
  - Desenvolver uma aplicação Back-end que irá armazenar no banco de dados PostgreSQL, cadastros de usuários em uma plataforma;
