@@ -78,6 +78,16 @@ export const BoxTable = styled.div<{ alert: Boolean, searchMobile: Boolean }>`
     font-weight: 700;
   }
 
+  @media (max-width: 575.98px) {
+    .th-email {
+      display: none;
+    }
+
+    .td-email {
+      display: none;
+    }
+  }
+
   @media (min-width: 576px) and (max-width: 767.98px) {
     .tableBody {
       height: 65%;

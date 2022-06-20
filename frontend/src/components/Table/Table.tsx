@@ -83,7 +83,7 @@ const TableUser = () => {
               <Tr>
                 <Th>#id</Th>
                 <Th>nome</Th>
-                <Th>email</Th>
+                <Th className="th-email">email</Th>
                 <Th></Th>
                 <Th></Th>
               </Tr>
@@ -93,7 +93,7 @@ const TableUser = () => {
                 <Tr key={ index }>
                   <Td><b>{ user.id_user }</b></Td>
                   <Td>{ user.name }</Td>
-                  <Td>{ user.email }</Td>
+                  <Td className="td-email">{ user.email }</Td>
                   <Td className="delete-user" onClick={ () => deleteUser(user) }>
                     excluir
                   </Td>
