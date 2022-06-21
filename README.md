@@ -181,10 +181,8 @@ Por fim um footer com meus dados e rede sociais, essa foi um resumo de como foi 
 - TEST
 
   - JEST
-
   - MOCHA
   - CHAI
-
   - SINON
 
 
